@@ -1,4 +1,4 @@
 ﻿import sae
-import web
+import blog
 
-application = sae.create_wsgi_app(web.app)
+application = sae.create_wsgi_app(blog.app)
