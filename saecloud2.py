@@ -2,7 +2,7 @@
 
 import os
 import sys
-import yaml 
+import yaml
 import json
 import shutil
 import filecmp
@@ -28,6 +28,7 @@ verbose = False
 def version(args):
     print "SAE command line v%s" % VERSION
 
+
 def run(*args):
     # FIXME: Check the return code please
     if verbose:
@@ -35,6 +36,7 @@ def run(*args):
         return subprocess.call(args, close_fds=True)
     else:
         return subprocess.call(args, close_fds=False, stdout=open(os.devnull, 'w'))
+
 
 def _get_svn_opts(args):
     # opts = ['--username', SVN_USERNAME, '--password', SVN_PASSWORD]
@@ -55,6 +57,7 @@ def _get_svn_opts(args):
     print opts
     return opts
 
+
 def deploy(args):
     """Deploy local source to server
 
@@ -62,18 +65,18 @@ def deploy(args):
     directory, version number is set in config.yaml. 
 
     """
-    source = args.dir 
+    source = args.dir
     opts = _get_svn_opts(args)
     cache = LOCAL_CACHE_DIR
 
     conf_file = os.path.join(source, 'config.yaml')
     try:
-        conf =  yaml.load(open(conf_file))
+        conf = yaml.load(open(conf_file))
     except:
-        print >>sys.stderr, 'Error: Failed to load config.yaml'
+        print >> sys.stderr, 'Error: Failed to load config.yaml'
         return
 
-    name =  conf['name']
+    name = conf['name']
     version = conf['version']
 
     print 'Deploying http://%s.%s.sinaapp.com' % (version, name)
@@ -90,7 +93,7 @@ def deploy(args):
     modified = False
     vpath = os.path.join(path, str(version))
     if os.path.exists(vpath):
-        q = ['',]
+        q = ['', ]
         while len(q):
             part = q.pop(0)
             s = os.path.join(source, part)
@@ -99,7 +102,7 @@ def deploy(args):
 
             # New files
             for f in dc.left_only:
-                if f.startswith('.'): 
+                if f.startswith('.'):
                     continue
                 d1 = os.path.join(s, f)
                 d2 = os.path.join(t, f)
@@ -112,7 +115,7 @@ def deploy(args):
 
             # Deleted files
             for f in dc.right_only:
-                if f.startswith('.'): 
+                if f.startswith('.'):
                     continue
                 d = os.path.join(t, f)
                 if os.path.isdir(d):
@@ -124,7 +127,7 @@ def deploy(args):
 
             # Modified files
             for f in dc.diff_files:
-                if f.startswith('.'): 
+                if f.startswith('.'):
                     continue
                 d1 = os.path.join(s, f)
                 d2 = os.path.join(t, f)
@@ -141,11 +144,12 @@ def deploy(args):
 
     if not modified:
         print 'No changes found',
-        return 
+        return
     print 'Pushing to server... ',
     sys.stdout.flush()
     run(SVN_EXE, 'commit', path, '-mx')
     print 'done'
+
 
 def export(args):
     """Export source from sae server
@@ -161,21 +165,22 @@ def export(args):
     run(SVN_EXE, 'export', url, args.app, *opts)
 
 ESC = "\x1b"
-save = ESC+"7"
-unsave = ESC+"8"
-clear = ESC+"[2J"
-erase_to_start = ESC+"[1K"
+save = ESC + "7"
+unsave = ESC + "8"
+clear = ESC + "[2J"
+erase_to_start = ESC + "[1K"
 
 def setprogress(text, frac):
     if sys.stdout.isatty():
         sys.stdout.write(erase_to_start)
         sys.stdout.write(unsave)
 
-    sys.stdout.write("%s ... %d%%" % (text, int(100*frac)))
+    sys.stdout.write("%s ... %d%%" % (text, int(100 * frac)))
     if not sys.stdout.isatty():
         sys.stdout.write(os.linesep)
 
     sys.stdout.flush()
+
 
 def uploadfile2(filename, appinfo, domain):
     offset = 0
@@ -225,7 +230,7 @@ def uploadfile2(filename, appinfo, domain):
             continue
 
         code, message = rep.split(':', 1)
-        
+
         if code == '0':
             token = message
         elif code == '1':
@@ -236,11 +241,12 @@ def uploadfile2(filename, appinfo, domain):
 
         offset += chunk_size
 
-        setprogress("Uploading %s" % filename, float(end)/file_size)
+        setprogress("Uploading %s" % filename, float(end) / file_size)
 
     setprogress("Uploading %s" % filename, 1.0)
 
     print
+
 
 class LocalAuthData:
     def __init__(self, appname):
@@ -260,7 +266,7 @@ class LocalAuthData:
             os.makedirs(self.dir)
         except:
             pass
-        
+
         try:
             json.dump(dict, open(self.path, 'w'))
         except:
@@ -272,10 +278,11 @@ class LocalAuthData:
         except:
             pass
 
+
 def upload_data(args):
-    appname  = args.app
-    domain   = args.domain
-    files    = args.file
+    appname = args.app
+    domain = args.domain
+    files = args.file
     username = args.username
     password = args.password
 
@@ -288,6 +295,7 @@ def upload_data(args):
             # Try to read from STDIN
             username = raw_input("Username: ")
             import getpass
+
             password = getpass.getpass("Password: ")
 
     print "User authentication"
@@ -304,7 +312,7 @@ def upload_data(args):
     LocalAuthData(appname).dump({
         'username': username, 'password': password
     })
-        
+
     print "Getting application's information"
     params = urllib.urlencode([
         ('action', 'appinfo'), ('name', appname), ('cookie', cookie)
@@ -324,6 +332,7 @@ def upload_data(args):
     for f in files:
         uploadfile2(f, (appname, accesskey, secretkey), domain)
 
+
 def install(args):
     dest = os.path.join(os.getcwd(), 'site-packages')
 
@@ -331,6 +340,7 @@ def install(args):
         os.mkdir(dest)
 
     import tempfile
+
     tmpdir = tempfile.gettempdir()
     argv = ['install', '-I',
             '--install-option=--install-lib=%s' % dest,
@@ -338,6 +348,7 @@ def install(args):
             '--install-option=--install-scripts=%s' % tmpdir]
     # only compile if it is python2.7.3
     import imp
+
     magic = imp.get_magic()[:2]
     if magic != '\x03\xf3':
         argv.append('--install-option=--no-compile')
@@ -348,13 +359,16 @@ def install(args):
     try:
         def _(*arg, **kws):
             pass
+
         import pip.req
+
         pip.req.InstallRequirement.uninstall = _
         pip.req.InstallRequirement.commit_uninstall = _
     except:
         pass
 
     import pip
+
     pip.main(argv)
 
     for f in os.listdir(dest):
@@ -362,13 +376,14 @@ def install(args):
         if os.path.isfile(pth) and f.endswith('.egg'):
             print 'uncompress: %s' % f
             import zipfile
+
             zf = zipfile.ZipFile(pth)
             zf.extractall(dest)
             zf.close()
             os.unlink(pth)
 
-def main():
 
+def main():
     parser = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]))
     parser.set_defaults(verbose=False)
 
@@ -378,29 +393,29 @@ def main():
     credentials.add_argument('-svn', '--svnexepath', help='path of svn.exe')
     credentials.add_argument('-u', '--username', help='repo username')
     credentials.add_argument('-p', '--password', help='repo password')
-    credentials.add_argument('-v', '--verbose', dest='verbose', action='store_true', 
-                             help='show lowlevel repo operations')
+    credentials.add_argument('-v', '--verbose', dest='verbose', action='store_true',
+        help='show lowlevel repo operations')
 
     p = subparsers.add_parser('export', parents=[credentials],
-                              help='export source code to local directory')
+        help='export source code to local directory')
     p.add_argument('app', help='application name')
-    p.add_argument('version', nargs='?', default='1', 
-                   help='which version to export, default to 1')
+    p.add_argument('version', nargs='?', default='1',
+        help='which version to export, default to 1')
     p.set_defaults(func=export)
 
-    p = subparsers.add_parser('deploy', parents=[credentials], 
-                              help='deploy source directory to SAE')
-    p.add_argument('dir', nargs='?', default='.', 
-                   help='the source code directory to deploy, default to current dir')
+    p = subparsers.add_parser('deploy', parents=[credentials],
+        help='deploy source directory to SAE')
+    p.add_argument('dir', nargs='?', default='.',
+        help='the source code directory to deploy, default to current dir')
     p.set_defaults(func=deploy)
 
     p = subparsers.add_parser('install',
-                              help='helper to install packages for SAE application')
+        help='helper to install packages for SAE application')
     p.add_argument('package', nargs='+', help='package name to install')
     p.set_defaults(func=install)
 
     p = subparsers.add_parser('upload-data', parents=[credentials],
-                              help='upload files to storage')
+        help='upload files to storage')
     p.add_argument('app', help='application name')
     p.add_argument('domain', help='storage domain name')
     p.add_argument('file', nargs='+', help='local files to upload')
