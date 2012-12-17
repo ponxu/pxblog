@@ -1,9 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 import os
-from bottle import debug, Bottle, run, static_file, request, ERROR_PAGE_TEMPLATE
+from bottle import debug, Bottle, run, static_file, request
 from setting import *
-
-ERROR_PAGE_TEMPLATE = 'ddddddddddddd'
 
 debug(is_debug)
 app = Bottle()
