@@ -1,0 +1,10 @@
+<?py # -*- coding: utf-8 -*- ?>
+<?py #@ARGS items ?>
+<table>
+<?py cycle = new_cycle('odd', 'even') ?>
+<?py for item in items: ?>
+  <tr class="#{cycle()}">
+    <td>${item}</td>
+  </tr>
+<?py #endfor ?>
+</table>

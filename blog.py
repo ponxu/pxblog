@@ -2,6 +2,7 @@
 import os
 from bottle import debug, Bottle, run, static_file, request
 from setting import *
+from utils import *
 
 debug(is_debug)
 app = Bottle()
@@ -97,13 +98,14 @@ def get_param(name, df=None):
 # 模板 #########################################################################
 ###############################################################################
 from jinja2 import Environment, FileSystemLoader
-from func4temp import theme_path
+from func4temp import theme_path, all_funcs
 
 env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), template_dir)))
 
 def render(template_name, *args, **kwargs):
     t = env.get_template(theme_path(template_name))
-    return t.render(*args, **kwargs)
+    new_kwargs = merge_dict(kwargs, all_funcs)
+    return t.render(*args, **new_kwargs)
 
 
 if __name__ == "__main__":

@@ -2,9 +2,23 @@
 <html>
 <head>
     <title></title>
+	<link rel="stylesheet" type="text/css" href="{{ static_path('style.css') }}" />
 </head>
 <body>
-test<br>
-name: {{ name }}
+test2<br>
+name: {{ name }}<br>
+file: {{ __file__ }}<br>
+
+{{ bloginfo('aa') }}<br>
+
+{{ bloginfo('bb') }}<br>
+
+<h1>tags</h1>
+<ul>
+{% for tag in get_tags() %}
+  <li class="{{ loop.cycle('1', '2') }}">{{ tag }}</li>
+{% endfor %}
+</ul>
+
 </body>
 </html>

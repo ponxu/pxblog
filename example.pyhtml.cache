@@ -1,0 +1,13 @@
+timestamp: 1355816624.5
+args: items
+
+# -*- coding: utf-8 -*-
+items = _context.get('items'); 
+_extend=_buf.extend;_to_str=to_str;_escape=escape; _extend(('''<table>\r\n''', ));
+cycle = new_cycle('odd', 'even')
+for item in items:
+    _extend(('''  <tr class="''', _to_str(cycle()), '''">\r
+    <td>''', _escape(_to_str(item)), '''</td>\r
+  </tr>\r\n''', ));
+#endfor
+_extend(('''</table>''', ));
