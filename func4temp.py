@@ -8,15 +8,15 @@ def bloginfo(name):
 
 
 def get_posts(paged, max=page_size):
-    return [2,3,4,8,9]
+    return [2, 3, 4, 8, 9]
 
 
 def get_pages(max=page_size):
-    return [2,3,4,8,9]
+    return [2, 3, 4, 8, 9]
 
 
 def get_tags():
-    return [2,3,4,8,9]
+    return [2, 3, 4, 8, 9]
 
 
 # 带上theme, 如果以<theme_admin>开头, 不加theme
@@ -36,8 +36,8 @@ def static_path(filename, with_version=False):
         return "/static/%s?v=%s" % (filename, _file_version(abs_filename))
     else:
         return "/static/%s" % filename
-    
-    
+
+
 def _file_version(filename):
     try:
         secs = os.stat(filename).st_mtime
@@ -45,14 +45,14 @@ def _file_version(filename):
         return str(time.strftime("%Y%m%d%H%M%S", t))
     except:
         return '0'
-        
+
 all_funcs = locals()
 
 # Test
 if __name__ == "__main__":
     print all_funcs
     print '-----------------'
-    
+
     print theme_path('home.html')
     print theme_path('/home.html')
     print theme_path('admin/home.html')

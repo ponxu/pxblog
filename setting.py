@@ -27,13 +27,13 @@ temp_admin_login = '%s/login.html' % theme_admin
 is_local = 'SERVER_SOFTWARE' not in os.environ
 is_sae = 'SERVER_SOFTWARE' in os.environ
 
-db_host = 'localhost'
+db_host = '127.0.0.1'
 db_port = 3306
 db_user = 'root'
 db_passwd = 'root'
 db_name = 'pxblog'
 
-db_host2 = 'localhost'
+db_host2 = '127.0.0.1'
 db_port2 = 3306
 db_user2 = 'root'
 db_passwd2 = 'root'
@@ -46,8 +46,8 @@ if is_sae:
     db_user = sae.const.MYSQL_USER
     db_passwd = sae.const.MYSQL_PASS
     db_name = sae.const.MYSQL_DB
-    
-    
+
+
 # Test
 if __name__ == "__main__":
     print is_sae

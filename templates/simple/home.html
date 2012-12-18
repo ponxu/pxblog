@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-	<link rel="stylesheet" type="text/css" href="{{ static_path('style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ static_path('style.css') }}"/>
 </head>
 <body>
 test2<br>
@@ -15,9 +15,9 @@ file: {{ __file__ }}<br>
 
 <h1>tags</h1>
 <ul>
-{% for tag in get_tags() %}
-  <li class="{{ loop.cycle('1', '2') }}">{{ tag }}</li>
-{% endfor %}
+    {% for tag in get_tags() %}
+    <li class="{{ loop.cycle('1', '2') }}">{{ tag }}</li>
+    {% endfor %}
 </ul>
 
 </body>
