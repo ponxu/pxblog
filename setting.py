@@ -39,6 +39,9 @@ db_user2 = 'root'
 db_passwd2 = 'root'
 db_name2 = 'pxblog'
 
+# 数据库连接超时(秒)
+max_idle_time = 10
+
 if is_sae:
     import sae.const
     db_host = sae.const.MYSQL_HOST

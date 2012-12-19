@@ -3,6 +3,7 @@ import os
 from bottle import debug, Bottle, run, static_file, request
 from setting import *
 from utils import *
+from testdb import *
 
 debug(is_debug)
 app = Bottle()
@@ -44,6 +45,9 @@ def cache(key_prefix, key_suffix_func=None, time=cache_time):
 @app.get('/')
 @cache('page_index_', lambda: get_param('paged', '1'))
 def home():
+    posts = query('select * from test')
+    con = conntest
+    print con
     return render(temp_home, locals())
 
 

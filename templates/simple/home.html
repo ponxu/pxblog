@@ -20,5 +20,15 @@ file: {{ __file__ }}<br>
     {% endfor %}
 </ul>
 
+<h1>posts</h1>
+<ul>
+    {% for post in posts %}
+    <li class="{{ loop.cycle('1', '2') }}">{{ post.id }}</li>
+	<li class="{{ loop.cycle('1', '2') }}">{{ post }}</li>
+    {% endfor %}
+</ul>
+
+con: {{ con }}
+
 </body>
 </html>

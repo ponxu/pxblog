@@ -8,6 +8,7 @@ kv = sae.kvdb.KVClient()
 # 读取缓存
 def get_cache(key):
     if not key: return ''
+    print key
     return kv.get(key)
 
 
