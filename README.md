@@ -11,7 +11,7 @@ bottle + Jinja2
  * templates    	模板目录
  * setting.py		设置(*)
  * blog.py			url处理
- * model.py         model
+ * model.py         model, 数据库访问
  * func4temp.py		为模板提供方法: 最新文章, 随机文章, 某标签文章
  * cache.py			缓存
  * file.py			文件读写

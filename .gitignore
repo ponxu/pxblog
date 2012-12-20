@@ -36,3 +36,4 @@ nosetests.xml
 /*.wsgic
 /.idea
 /saecloud2.bat
+/table.pdb
