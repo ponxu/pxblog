@@ -11,9 +11,11 @@ bottle + Jinja2
  * templates    	模板目录
  * setting.py		设置(*)
  * blog.py			url处理
+ * model.py         model
  * func4temp.py		为模板提供方法: 最新文章, 随机文章, 某标签文章
  * cache.py			缓存
  * file.py			文件读写
  * utils.py			工具: 当前日期...(*)
+ * torndb.py        MySQLdb简单封装(tornado)
 
 (*)不依赖其他文件

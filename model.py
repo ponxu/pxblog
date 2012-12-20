@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import torndb as database
 from setting import *
 

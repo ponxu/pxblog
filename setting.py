@@ -44,11 +44,14 @@ max_idle_time = 10
 
 if is_sae:
     import sae.const
+
     db_host = sae.const.MYSQL_HOST
-    db_port = int(sae.const.MYSQL_PORT)
-    db_user = sae.const.MYSQL_USER
-    db_passwd = sae.const.MYSQL_PASS
-    db_name = sae.const.MYSQL_DB
+    db_host2 = sae.const.MYSQL_HOST_S
+
+    db_port = db_port2 = int(sae.const.MYSQL_PORT)
+    db_name = db_name2 = sae.const.MYSQL_DB
+    db_user = db_user2 = sae.const.MYSQL_USER
+    db_passwd = db_passwd2 = sae.const.MYSQL_PASS
 
 
 # Test
