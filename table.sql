@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2012-12-21 16:11:18                          */
+/* Created on:     2012-12-21 16:14:58                          */
 /*==============================================================*/
 
 
@@ -49,7 +49,7 @@ create table px_option
 create table px_post
 (
    id                   int not null auto_increment,
-   url                  varchar(500),
+   url                  varchar(200),
    title                varchar(500),
    content              longtext not null,
    addtime              int(10) not null,
@@ -66,8 +66,9 @@ create table px_post
 /*==============================================================*/
 create table px_post_tag
 (
-   post_id              int,
-   tag_id               int
+   post_id              int not null,
+   tag_id               int not null,
+   primary key (post_id, tag_id)
 );
 
 /*==============================================================*/
