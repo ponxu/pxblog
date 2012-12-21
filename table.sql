@@ -1,21 +1,51 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2012-12-20 17:51:07                          */
+/* Created on:     2012-12-21 14:49:27                          */
 /*==============================================================*/
 
 
-drop table if exists bj_post;
+drop table if exists px_link;
 
-drop table if exists bj_post_tag;
+drop table if exists px_option;
 
-drop table if exists bj_setting;
+drop table if exists px_post;
 
-drop table if exists bj_tag;
+drop table if exists px_post_tag;
+
+drop table if exists px_tag;
 
 /*==============================================================*/
-/* Table: bj_post                                               */
+/* Table: px_link                                               */
 /*==============================================================*/
-create table bj_post
+create table px_link
+(
+   id                   int not null,
+   name                 varchar(50) not null,
+   description          varchar(500),
+   url                  varchar(200) not null,
+   icon                 varchar(200),
+   primary key (id),
+   unique key UNI_LINK_NAME (name),
+   unique key UNI_LINK_URL (url)
+);
+
+/*==============================================================*/
+/* Table: px_option                                             */
+/*==============================================================*/
+create table px_option
+(
+   id                   int not null auto_increment,
+   name                 varchar(100) not null,
+   value                longtext not null,
+   description          varchar(200),
+   primary key (id),
+   unique key UNI_OPTION_NAME (name)
+);
+
+/*==============================================================*/
+/* Table: px_post                                               */
+/*==============================================================*/
+create table px_post
 (
    id                   int not null auto_increment,
    url                  varchar(500),
@@ -31,31 +61,18 @@ create table bj_post
 );
 
 /*==============================================================*/
-/* Table: bj_post_tag                                           */
+/* Table: px_post_tag                                           */
 /*==============================================================*/
-create table bj_post_tag
+create table px_post_tag
 (
    post_id              int,
    tag_id               int
 );
 
 /*==============================================================*/
-/* Table: bj_setting                                            */
+/* Table: px_tag                                                */
 /*==============================================================*/
-create table bj_setting
-(
-   id                   int not null auto_increment,
-   name                 varchar(100) not null,
-   value                longtext not null,
-   description          varchar(200),
-   primary key (id),
-   unique key UNI_SETTING_NAME (name)
-);
-
-/*==============================================================*/
-/* Table: bj_tag                                                */
-/*==============================================================*/
-create table bj_tag
+create table px_tag
 (
    id                   int not null auto_increment,
    name                 varchar(50) not null,
@@ -65,9 +82,9 @@ create table bj_tag
    unique key UNI_TAG_NAME (name)
 );
 
-alter table bj_post_tag add constraint FK_TO_POST foreign key (post_id)
-      references bj_post (id) on delete restrict on update restrict;
+alter table px_post_tag add constraint FK_TO_POST foreign key (post_id)
+      references px_post (id) on delete restrict on update restrict;
 
-alter table bj_post_tag add constraint FK_TO_TAG foreign key (tag_id)
-      references bj_tag (id) on delete restrict on update restrict;
+alter table px_post_tag add constraint FK_TO_TAG foreign key (tag_id)
+      references px_tag (id) on delete restrict on update restrict;
 

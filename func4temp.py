@@ -3,7 +3,7 @@ import os
 import time
 from setting import *
 
-def bloginfo(name):
+def option(name):
     return 'bloginfo-%s' % name
 
 

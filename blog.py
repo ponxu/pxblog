@@ -16,6 +16,9 @@ from cache import *
 def cache(key_prefix, key_suffix_func=None, time=cache_time):
     def _cache(func):
         def __cache(*args, **kwargs):
+            # 不进行页面缓存
+            if not is_cache_page: return func(*args, **kwargs)
+
             real_key = key_prefix
             # 计算后缀
             if key_suffix_func:
@@ -45,32 +48,32 @@ def cache(key_prefix, key_suffix_func=None, time=cache_time):
 @app.get('/')
 @cache('page_index_', lambda: get_param('paged', '1'))
 def home():
-    return render(temp_home, locals())
+    return render(thome, locals())
 
 
 @app.get('/post/:postid')
 @cache('page_post_', lambda postid: postid)
 def post_detail(postid):
-    return render(temp_post, locals())
+    return render(tpost, locals())
 
 
 @app.get('/page/:enname')
 @cache('page_post_', lambda enname: enname)
 def page_detail(enname):
-    return render(temp_page, locals())
+    return render(tpage, locals())
 
 
 @app.get('/tag/:tagid')
 @cache('page_tag_', lambda tagid: tagid + '_' + get_param('paged', '1'))
 def posts_under_tag(tagid):
-    return render(temp_list, locals())
+    return render(tlist, locals())
 
 
 @app.get('/search')
 def search():
     s = get_param('s')
     print 's=%s' % s
-    return render(temp_list, locals())
+    return render(tlist, locals())
 
 
 ###############################################################################
@@ -78,11 +81,14 @@ def search():
 ###############################################################################
 
 
+###############################################################################
+# other ########################################################################
+###############################################################################
+
 #------------------------------------------
 @app.get('/static/:filename#.+#')
 @app.get('/:filename#favicon.ico#')
 def service_static_file(filename):
-    print 'static file: %s' % filename
     return static_file(filename, root=template_dir)
 
 
@@ -98,15 +104,15 @@ def get_param(name, df=None):
 ###############################################################################
 # 模板 #########################################################################
 ###############################################################################
-from jinja2 import Environment, FileSystemLoader
 from func4temp import theme_path, all_funcs
+import tenjin
+from tenjin.helpers import *
 
-env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), template_dir)))
+engine = tenjin.Engine(path=[template_dir], cache=False)
 
 def render(template_name, *args, **kwargs):
-    t = env.get_template(theme_path(template_name))
-    new_kwargs = merge_dict(kwargs, all_funcs)
-    return t.render(*args, **new_kwargs)
+    context = merge_dict(kwargs, all_funcs)
+    return engine.render(theme_path(template_name), context)
 
 
 if __name__ == "__main__":
