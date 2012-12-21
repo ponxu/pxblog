@@ -2019,9 +2019,10 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Code>id</a:Code>
 <a:CreationDate>1356072428</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1356072428</a:ModificationDate>
+<a:ModificationDate>1356077457</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <a:DataType>int</a:DataType>
+<a:Identity>1</a:Identity>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
 <o:Column Id="o45">

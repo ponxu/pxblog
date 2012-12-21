@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2012-12-21 14:49:27                          */
+/* Created on:     2012-12-21 16:11:18                          */
 /*==============================================================*/
 
 
@@ -19,11 +19,12 @@ drop table if exists px_tag;
 /*==============================================================*/
 create table px_link
 (
-   id                   int not null,
+   id                   int not null auto_increment,
    name                 varchar(50) not null,
    description          varchar(500),
    url                  varchar(200) not null,
    icon                 varchar(200),
+   status               varchar(20) not null default 'hidden',
    primary key (id),
    unique key UNI_LINK_NAME (name),
    unique key UNI_LINK_URL (url)
@@ -49,7 +50,7 @@ create table px_post
 (
    id                   int not null auto_increment,
    url                  varchar(500),
-   title                varchar(500) not null,
+   title                varchar(500),
    content              longtext not null,
    addtime              int(10) not null,
    top                  int not null default 0,
