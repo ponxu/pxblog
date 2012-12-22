@@ -21,6 +21,7 @@ create table px_link
 (
    id                   int not null auto_increment,
    name                 varchar(50) not null,
+   sort                 int default 0,
    description          varchar(500),
    url                  varchar(200) not null,
    icon                 varchar(200),
@@ -54,7 +55,7 @@ create table px_post
    content              longtext not null,
    addtime              int(10) not null,
    top                  int not null default 0,
-   status               varchar(20) not null default 'public',
+   status               varchar(20) not null default 'publish',
    type                 varchar(20) not null default 'post',
    password             varchar(10),
    primary key (id),
