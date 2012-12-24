@@ -1,9 +1,9 @@
 ﻿# -*- coding: utf-8 -*-
-import os
-from bottle import debug, Bottle, run, static_file, request
+from bottle import debug, Bottle, run, static_file, request, response, redirect, template
 from setting import *
 from utils import *
 from model import *
+from cache import cache_page
 
 debug(is_debug)
 app = Bottle()
@@ -11,45 +11,17 @@ app = Bottle()
 ###############################################################################
 # 登录验证装饰 ###################################################################
 ###############################################################################
-def oath(func):
-    print 'oath......'
+def authenticated(func):
+    def _authenticated(*args, **kwargs):
+        browser = request.headers.get('User-Agent')
+        user_cookie = request.get_cookie('user', cookie_secret)
+        user_right = md5_str(Option.get('username') + browser + Option.get('password'))
 
-    def _oath(*args, **kwargs):
-        return func(*args, **kwargs)
+        if user_cookie <> user_right:
+            redirect('/login')
+        else: return func(*args, **kwargs)
 
-    return _oath
-
-###############################################################################
-# 页面缓存装饰 ###################################################################
-###############################################################################
-from cache import *
-
-def cache(key_prefix, key_suffix_func=None, time=cache_time):
-    def _cache(func):
-        def __cache(*args, **kwargs):
-            # 不进行页面缓存
-            if not is_cache_page: return func(*args, **kwargs)
-
-            real_key = key_prefix
-            # 计算后缀
-            if key_suffix_func:
-                key_suffix = key_suffix_func(*args, **kwargs)
-                real_key += key_suffix
-
-            # 读取缓存
-            content = get_cache(real_key)
-
-            if content:
-                return content
-            else:
-                # 生成, 并缓存起来
-                content = func(*args, **kwargs)
-                set_cache(real_key, content, time)
-                return content
-
-        return __cache
-
-    return _cache
+    return _authenticated
 
 
 ###############################################################################
@@ -57,26 +29,26 @@ def cache(key_prefix, key_suffix_func=None, time=cache_time):
 ###############################################################################
 
 @app.get('/')
-@oath
-@cache('page_index_', lambda: get_param('paged', '1'))
+@authenticated
+@cache_page('page_index_', lambda: get_param('paged', '1'))
 def home():
     return render(thome, locals())
 
 
 @app.get('/post/:postid')
-@cache('page_post_', lambda postid: postid)
+@cache_page('page_post_', lambda postid: postid)
 def post_detail(postid):
     return render(tpost, locals())
 
 
 @app.get('/page/:enname')
-@cache('page_post_', lambda enname: enname)
+@cache_page('page_post_', lambda enname: enname)
 def page_detail(enname):
     return render(tpage, locals())
 
 
 @app.get('/tag/:tagid')
-@cache('page_tag_', lambda tagid: tagid + '_' + get_param('paged', '1'))
+@cache_page('page_tag_', lambda tagid: tagid + '_' + get_param('paged', '1'))
 def posts_under_tag(tagid):
     return render(tlist, locals())
 
@@ -91,6 +63,31 @@ def search():
 ###############################################################################
 # admin ########################################################################
 ###############################################################################
+@app.get('/login')
+def for_login():
+    return render(tadmin_login)
+
+
+@app.post('/login')
+def login():
+    username = get_param('username')
+    password = md5_str(get_param('password'))
+    username_right = Option.get('username')
+    password_right = Option.get('password')
+
+    if username == username_right and password == password_right:
+        browser = request.headers.get('User-Agent')
+        user2cookie = md5_str(Option.get('username') + browser + Option.get('password'))
+        response.set_cookie('user', user2cookie, cookie_secret)
+
+    redirect('/admin')
+
+
+@app.get('/admin')
+@app.get('/admin/post-edit/:id')
+@authenticated
+def for_edit_post(id='0'):
+    return 'admin'
 
 
 ###############################################################################
@@ -104,6 +101,7 @@ def service_static_file(filename):
     return static_file(filename, root=template_dir)
 
 
+# 参数
 def get_param(name, df=None):
     if 'GET' == request.method:
         return request.GET.get(name, df)
@@ -111,6 +109,7 @@ def get_param(name, df=None):
         return request.POST.get(name, df)
     else:
         return df
+
 
 ###############################################################################
 # 模板 #########################################################################
@@ -126,5 +125,6 @@ def render(template_name, *args, **kwargs):
     return engine.render(theme_path(template_name), context)
 
 
+# Local Test
 if __name__ == "__main__":
     run(app, port=8080, reloader=True)

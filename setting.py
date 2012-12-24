@@ -4,10 +4,10 @@ import os
 # === user =========================
 theme = 'simple'
 page_size = 15
-
+cookie_secret = '*&HGF%Ksdf*@1sdf~~~``&8+))___+^^'
 
 # ===system=========================
-is_debug = False
+is_debug = True
 template_dir = 'templates'
 theme_admin = 'admin'
 is_cache_page = True
