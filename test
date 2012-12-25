@@ -1,4 +1,0 @@
-from bottle import SimpleTemplate
-
-tpl = SimpleTemplate('Hello {{name}}!')
-print tpl.render(name='World')

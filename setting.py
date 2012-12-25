@@ -14,10 +14,10 @@ is_cache_page = True
 cache_time = 24 * 3600 # sec
 
 # --- 模板名字 --------
-thome = 'home.html'
-tlist = 'list.html'
-tpost = 'post.html'
-tpage = 'page.html'
+thome = '%s/home.html' % theme
+tlist = '%s/list.html' % theme
+tpost = '%s/post.html' % theme
+tpage = '%s/page.html' % theme
 
 tadmin_post_edit = '%s/post-edit.html' % theme_admin
 tadmin_post_list = '%s/post-list.html' % theme_admin

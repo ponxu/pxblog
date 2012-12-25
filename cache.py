@@ -16,8 +16,11 @@ except:
 
 # 读取缓存
 def get_cache(key):
+    print 'key=%s' % key
     if not mc or not key: return None
-    return mc.get(key)
+    content = mc.get(str(key))
+    print 'content=%s' % content
+    return content
 
 
 # 缓存
@@ -32,6 +35,7 @@ def set_cache(key, value, time=cache_time):
 def cache_page(key_prefix, key_suffix_func=None, time=cache_time):
     def _cache(func):
         def __cache(*args, **kwargs):
+            print '====== cache_page begin ========================'
             # 不进行页面缓存
             if not is_cache_page: return func(*args, **kwargs)
 
@@ -45,12 +49,15 @@ def cache_page(key_prefix, key_suffix_func=None, time=cache_time):
             content = get_cache(real_key)
 
             if content:
-                return content
+                handler = args[0]
+                handler.write(content)
             else:
                 # 生成, 并缓存起来
                 content = func(*args, **kwargs)
+                if isinstance(real_key, unicode):
+                    real_key = real_key.encode('utf-8')
                 set_cache(real_key, content, time)
-                return content
+            print '====== cache_page end =========================='
 
         return __cache
 

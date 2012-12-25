@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import torndb as database
+from tornado import database
 from setting import *
 from utils import *
 
