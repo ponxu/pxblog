@@ -1,9 +1,6 @@
 {% extends "_body.html" %}
-
 {% block content %}
-
 <h1>文章编辑</h1>
-
 <form action="/admin/post-edit" method="post" id="editform">
 	<input type="hidden" name="id" id="id" value="{{ post.id }}">
 	<table width="100%"><tr>
@@ -34,7 +31,7 @@
 			<label>设置标签</label>
 			<ul id="tag-list">
 			{% for tag in get_tags() %}
-				<li><input type="checkbox" name="tagid" value="{{ tag.id }}">{{ tag.name }}</li>
+				<li><input type="checkbox" name="tagid" value="{{ tag.id }}" {{ if_out(tag in post.tags, 'checked') }}>{{ tag.name }}</li>
 			{% end %}
 			</ul>
 			<input type="text" id="newtagname" class="shadowfocus" placeholder="新标签" onkeyup="addNewTag()">

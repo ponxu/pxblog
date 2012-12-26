@@ -11,8 +11,9 @@ class PostQuery(BlogHandler):
     @authenticated
     def get(self):
         paged = get_paged(self)
-        type = self.get_argument('type'),
-        status = self.get_argument('status')
+        status = self.get_argument('status', '')
+        type = self.get_argument('type', '')
+
         url = '/admin/post-query?type=%s&status=%s' % (type, status)
 
         posts, total = Post.query(paged, type=type, status=status)
@@ -28,31 +29,31 @@ class PostEdit(BlogHandler):
     @authenticated
     def get(self, id='0'):
         if id == '0':
-            post = ObjectLikeDict()
+            post = ObjectLikeDict(tags=[])
         else:
             post = Post.get_by_id(int(id))
         return self.render(tadmin_post_edit, locals())
 
     @authenticated
     def post(self):
-        post = {
-            'id': int(self.get_argument('id', '0')),
-            'url': self.get_argument('url'),
-            'title': self.get_argument('title'),
-            'content': self.get_argument('content'),
-            'top': int(self.get_argument('top', '0')),
-            'status': self.get_argument('status', 'publish'),
-            'type': self.get_argument('type', 'post'),
-            'password': self.get_argument('password'),
-        }
+        post = ObjectLikeDict(
+            id=int(self.get_argument('id', '0')),
+            url=self.get_argument('url', ''),
+            title=self.get_argument('title', ''),
+            content=self.get_argument('content', ''),
+            top=int(self.get_argument('top', '0')),
+            status=self.get_argument('status', 'publish'),
+            type=self.get_argument('type', 'post'),
+            password=self.get_argument('password', ''),
+        )
 
         tagids = [int(i) for i in self.get_arguments('tagid')]
 
-        if post['id'] == 0:
+        if post.id == 0:
             id = Post.add(post, tagids)
         else:
             Post.modify(post, tagids)
-            id = post['id']
+            id = post.id
 
         self.render_json(id)
 
@@ -71,17 +72,17 @@ class TagEdit(BlogHandler):
 
     @authenticated
     def post(self):
-        tag = {
-            'id': int(self.get_argument('id', '0')),
-            'name': self.get_argument('name'),
-            'sort': int(self.get_argument('sort', '0')),
-        }
+        tag = ObjectLikeDict(
+            id=int(self.get_argument('id', '0')),
+            name=self.get_argument('name'),
+            sort=int(self.get_argument('sort', '0')),
+        )
 
-        if tag['id'] == 0:
-            id = Tag.add(tag['name'])
+        if tag.id == 0:
+            id = Tag.add(tag.name)
         else:
             Tag.modify(tag)
-            id = tag['id']
+            id = tag.id
 
         self.render_json(id)
 
@@ -121,21 +122,21 @@ class LinkEdit(BlogHandler):
 
     @authenticated
     def post(self):
-        link = {
-            'id': int(self.get_argument('id', '0')),
-            'name': self.get_argument('name'),
-            'sort': int(self.get_argument('sort', '0')),
-            'description': self.get_argument('description'),
-            'url': self.get_argument('url'),
-            'icon': self.get_argument('icon'),
-            'status': self.get_argument('status', 'hidden'),
-        }
+        link = ObjectLikeDict(
+            id=int(self.get_argument('id', '0')),
+            name=self.get_argument('name'),
+            sort=int(self.get_argument('sort', '0')),
+            description=self.get_argument('description'),
+            url=self.get_argument('url'),
+            icon=self.get_argument('icon'),
+            status=self.get_argument('status', 'hidden'),
+        )
 
-        if link['id'] == 0:
+        if link.id == 0:
             id = Link.add(link)
         else:
             Link.modify(link)
-            id = link['id']
+            id = link.id
 
         self.render_json(id)
 

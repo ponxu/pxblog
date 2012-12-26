@@ -9,7 +9,7 @@ from setting import page_size, is_debug
 
 def get_paged(handler):
     """ 页码 """
-    return handler.get_argument('paged', '1')
+    return int(handler.get_argument('paged', '1'))
 
 
 class BlogHandler(RequestHandler):
@@ -53,9 +53,9 @@ class PageInfo:
         self.next = (paged < self.pages) and (paged + 1) or self.pages
 
         if '?' in url:
-            paged_url = url + '&paged='
+            self.paged_url = url + '&paged='
         else:
-            paged_url = url + '?paged='
+            self.paged_url = url + '?paged='
 
-        self.pre_url = paged_url + str(self.pre)
-        self.next_url = paged_url + str(self.next)
+        self.pre_url = self.paged_url + str(self.pre)
+        self.next_url = self.paged_url + str(self.next)

@@ -58,8 +58,7 @@ create table px_post
    status               varchar(20) not null default 'publish',
    type                 varchar(20) not null default 'post',
    password             varchar(10),
-   primary key (id),
-   unique key UNI_POST_URL (url)
+   primary key (id)
 );
 
 /*==============================================================*/

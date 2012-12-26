@@ -37,7 +37,7 @@ handlers = [
     (r'/admin/link-edit', LinkEdit),
     (r'/admin/link-del/(\d+)', LinkDelete),
 
-    (r'/admin/option-edit', OptionEdit),
+    (r'/admin/option', OptionEdit),
 ]
 
 app = tornado.wsgi.WSGIApplication(handlers, **settings)

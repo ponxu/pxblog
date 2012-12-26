@@ -38,6 +38,11 @@ def md5(s):
     m.digest()
     return m.hexdigest()
 
+def unicode2str(ustr):
+    if isinstance(ustr, unicode):
+        return ustr.encode('utf8')
+    return ustr
+
 # Test
 if __name__ == "__main__":
     dict1 = {'a': 1, 'b': 2}

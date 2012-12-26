@@ -43,7 +43,7 @@ def cache_page(key_prefix, key_suffix_func=None, time=cache_time):
             # 计算后缀
             if key_suffix_func:
                 key_suffix = key_suffix_func(*args, **kwargs)
-                real_key += key_suffix
+                real_key += str(key_suffix)
 
             # 读取缓存
             content = get_cache(real_key)

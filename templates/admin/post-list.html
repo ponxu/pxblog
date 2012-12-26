@@ -1,7 +1,6 @@
-<#include "inc/header.ftl">
-
-<h1>${listTitle!}</h1>
-
+{% extends "_body.html" %}
+{% block content %}
+<h1>列表</h1>
 <table width="100%" class="listt">
 	<thead>
 		<tr>
@@ -13,43 +12,52 @@
 		</tr>
 	</thead>
 	<tbody>
-	<#list posts as post>
+	{% for post in posts %}
 	<tr>
-		<td>${post.id}</td>
+		<td>{{ post.id }}</td>
 		<td>
-			<a href="${ctxPath}/admin/post-edit/${post.id}">
-				<#if post.top=1>[置顶]</#if>${post.title}
+			<a href="/admin/post-edit/{{ post.id }}">
+                {{ if_out(post.top==1, '[置顶]') }}{{ post.title }}
 			</a>
+            <div style="margin-top: 5px; font-size: 10px;">
+            {% for tag in post.tags %}
+            <span>{{ tag.name }}</span>
+            {% end %}
+            </div>
 		</td>
-		<td>${post.addtime?string("yyyy-MM-dd HH:mm")}</td>
-		<td>${post.status}</td>
+		<td>{{ fmt(post.addtime) }}<br>{{ friend_time(post.addtime) }}</td>
+		<td>{{ post.status }}</td>
 		<td>
-			<input type="button" class="btn2 shadowhover2" value="修改" onclick="edit(${post.id})">
-			<input type="button" class="btn shadowhover" value="删除" onclick="del(${post.id})">
+			<input type="button" class="btn2 shadowhover2" value="修改" onclick="edit({{post.id}})">
+			<input type="button" class="btn shadowhover" value="删除" onclick="del({{post.id}})">
 		</td>
 	</tr>
-	</#list>
+	{% end %}
 	</tbody>
 </table>
 
 <div class="navbar">
-	<#if (pageInfo.currentIndex>1)>
-	<a href="${ctxPath}${pageInfo.preUrl}" class="left"><-更新</a>
-	</#if>
-	
-	${pageInfo.currentIndex} of ${pageInfo.pageCount}页 / 共${pageInfo.totalCount}篇
-	
-	<#if (pageInfo.currentIndex<pageInfo.pageCount)>
-	<a href="${ctxPath}${pageInfo.nextUrl}" class="right">更旧-></a>
-	</#if>
-	
-	<div class="clear"></div>
+    {%if page_info.paged>1 %}
+    <a href="{{ page_info.pre_url }}" class="left">上一页</a>
+    {% end %}
+
+    {% for i in range(page_info.paged-5, page_info.paged+5) %}
+        {% if i>=1 and i<=page_info.pages %}
+            <a href="{{ page_info.paged_url }}{{ i }}" {{ if_out(i==page_info.paged, 'class="current"') }}>
+                {{i}}
+            </a>
+        {% end %}
+    {% end %}
+
+    {% if page_info.paged<page_info.pages %}
+    <a href="{{ page_info.next_url }}" class="right">下一页</a>
+    {% end %}
 </div>
 
 <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
 function edit(postid) {
-	location = "${ctxPath}/admin/post-edit/" + postid;
+	location = "/admin/post-edit/" + postid;
 }
 
 function del(postid) {
@@ -57,7 +65,7 @@ function del(postid) {
 		return;
 	
 	$.ajax({
-		url: "${ctxPath}/admin/post-del/" + postid,
+		url: "/admin/post-del/" + postid,
 		type: "GET",
 		success: function(ret) {
 			if (ret > 0) {
@@ -67,4 +75,4 @@ function del(postid) {
 	});
 }
 </script>
-<#include "inc/footer.ftl">
+{% end %}

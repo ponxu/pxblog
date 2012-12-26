@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from model import *
 from setting import page_size
+from utils import fmt_time, now
 
 def option(name):
     return Option.get(name)
@@ -19,41 +20,48 @@ def get_tags():
 
 
 def if_out(flag, out):
-    if flag:
-        return out
-    return ''
-
-"""
-# 带上theme, 如果以<theme_admin>开头, 不加theme
-def theme_path(filename):
-    if filename[:1] == '/':
-        filename = filename[1:]
-    if not filename.startswith(theme_admin + '/'):
-        filename = '%s/%s' % (theme, filename)
-    return filename
+    return flag and out or ''
 
 
-# 生成静态url
-def static_path(filename, with_version=False):
-    filename = theme_path(filename)
-    if with_version:
-        abs_filename = os.path.abspath(template_dir + '/' + filename)
-        return "/static/%s?v=%s" % (filename, _file_version(abs_filename))
-    else:
-        return "/static/%s" % filename
+def fmt(seconds, f='%Y-%m-%d %H:%M:%S'):
+    return fmt_time(f, seconds)
 
 
-def _file_version(filename):
-    try:
-        secs = os.stat(filename).st_mtime
-        t = time.localtime(secs)
-        return str(time.strftime("%Y%m%d%H%M%S", t))
-    except:
-        return '0'
-"""
+def friend_time(seconds):
+    diff = now() - seconds
+    days = diff / 86400
+
+    if days > 730:
+        return '%s years ago' % (days / 365)
+    if days > 365:
+        return '1 year ago'
+    if days > 60:
+        return '%s months ago' % (days / 30)
+    if days > 30:
+        return '1 month ago'
+    if days > 14:
+        return '%s weeks ago' % (days / 7)
+    if days > 7:
+        return '1 week ago'
+    if days > 1:
+        return '%s days ago' % days
+
+    if diff > 7200:
+        return '%s hours ago' % (diff / 3600)
+    if diff > 3600:
+        return '1 hour ago'
+    if diff > 120:
+        return '%s minutes ago' % (diff / 60)
+    if diff > 60:
+        return '1 minute ago'
+    if diff > 1:
+        return '%s seconds ago' % diff
+
+    return '%s second ago' % diff
+
 
 all_funcs = locals()
 
 # Test
 if __name__ == "__main__":
-    print all_funcs
+    print friend_time(now() - 86300)

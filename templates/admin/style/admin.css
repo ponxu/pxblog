@@ -239,6 +239,12 @@ input[type=text],select,textarea {
 .listt input[type=text] {
 	padding: 3px 5px;
 }
+
+sup {
+    color: #FF0000;
+    font-size: 8px;
+}
+
 .navbar {
 	text-align: center;
 	margin: 10px 0px;

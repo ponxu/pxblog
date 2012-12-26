@@ -46,7 +46,7 @@ class _Tag:
 
     def modify(self, tag):
         sql = 'update px_tag set name=%s,sort=%s where id=%s'
-        return mdb.execute_rowcount(sql, tag['name'], tag['sort'], tag['id'])
+        return mdb.execute_rowcount(sql, tag.name, tag.sort, tag.id)
 
 Tag = _Tag()
 
@@ -62,25 +62,25 @@ class _Link:
         sql = '''insert into px_link(name,url,description,
             icon,status,sort) values(%s,%s,%s,%s,%s,%s)'''
         return mdb.execute_lastrowid(sql,
-            link['name'],
-            link['url'],
-            link['description'],
-            link['icon'],
-            link['status'],
-            link['sort'])
+            link.name,
+            link.url,
+            link.description,
+            link.icon,
+            link.status,
+            link.sort)
 
     def modify(self, link):
         sql = '''update px_link set name=%s,url=%s,
             description=%s,icon=%s,status=%s,sort=%s
             where id=%s'''
         return mdb.execute_rowcount(sql,
-            link['name'],
-            link['url'],
-            link['description'],
-            link['icon'],
-            link['status'],
-            link['sort'],
-            link['id'])
+            link.name,
+            link.url,
+            link.description,
+            link.icon,
+            link.status,
+            link.sort,
+            link.id)
 
     def remove(self, id):
         return mdb.execute_rowcount('delete from px_link where id=%s', id)
@@ -100,33 +100,33 @@ class _Post:
             status,type,password)
             values(%s,%s,%s,%s,%s,%s,%s,%s)'''
         id = mdb.execute_lastrowid(sql,
-            post['url'],
-            post['title'],
-            post['content'],
+            post.url,
+            post.title,
+            post.content,
             now(),
-            post['top'],
-            post['status'],
-            post['type'],
-            post['password'])
+            post.top,
+            post.status,
+            post.type,
+            post.password)
         for tagid in tagids:
             self._add_tag(id, tagid)
         return id
 
-    def modify(self, post, tagids):
+    def modify(self, post, new_tagids):
         self._set_tag(post)
 
-        exists_tagids = []
+        old_tagids = [tag.id for tag in post.tags]
 
         # 移除删除的标签
-        for tag in post.tags:
-            if tagids.index(tag.id) == -1:
-                self._remove_tag(post.id, tag.id)
-                post.tags.remove(tag)
-            else: exists_tagids.append(tag.id)
+        for tagid in old_tagids:
+            if tagid not in new_tagids:
+                old_tagids.remove(tagid)
+                #post.tags.remove(???)
+                self._remove_tag(post.id, tagid)
 
         # 增加新选择标签
-        for tagid in tagids:
-            if exists_tagids.index(tagid) == -1:
+        for tagid in new_tagids:
+            if tagid not in old_tagids:
                 self._add_tag(post.id, tagid)
 
         # 更新
@@ -135,14 +135,14 @@ class _Post:
             status=%s,type=%s,password=%s
             where id=%s'''
         return mdb.execute_rowcount(sql,
-            post['url'],
-            post['title'],
-            post['content'],
-            post['top'],
-            post['status'],
-            post['type'],
-            post['password'],
-            post['id'])
+            post.url,
+            post.title,
+            post.content,
+            post.top,
+            post.status,
+            post.type,
+            post.password,
+            post.id)
 
     def remove(self, id):
         mdb.execute_rowcount('''
@@ -189,15 +189,19 @@ class _Post:
         return self._set_tag(sdb.query(sql)), sdb.get(count_sql)['count(*)']
 
     def _set_tag(self, posts):
+        """ 给文章设置标签信息 """
+        if posts is None:
+            return None
+
         post_array = to_list(posts)
 
         # 查询文章和标签关联关系
-        postids = [post['id'] for post in post_array]
+        postids = [post.id for post in post_array]
         relation = self._get_relation(postids)
 
         # 关联
         for post in post_array:
-            post['tags'] = filter(lambda tag: self._has_relation(post['id'], tag.id, relation), Tag.all())
+            post.tags = filter(lambda tag: self._has_relation(post.id, tag.id, relation), Tag.all())
 
         return posts
 
@@ -224,7 +228,7 @@ class _Post:
 
     def _remove_tag(self, postid, tagid):
         """ 移除文章的一个标签 """
-        mdb.execute_rowcount('delete from px_post_tag post_id=%s and tag_id=%s', postid, tagid)
+        mdb.execute_rowcount('delete from px_post_tag where post_id=%s and tag_id=%s', postid, tagid)
         mdb.execute_rowcount('update px_tag set post_count=post_count-1 where post_count>0 and id=%s', tagid)
 
 Post = _Post()
