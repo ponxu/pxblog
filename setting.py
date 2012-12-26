@@ -4,7 +4,8 @@ import os
 # === user =========================
 theme = 'simple'
 page_size = 15
-cookie_secret = '*&HGF%Ksdf*@1sdf~~~``&8+))___+^^'
+
+cookie_timeout = 7
 
 # ===system=========================
 is_debug = True
@@ -25,8 +26,12 @@ tadmin_setting = '%s/setting.html' % theme_admin
 tadmin_tag = '%s/tag.html' % theme_admin
 tadmin_login = '%s/login.html' % theme_admin
 
+#----------------
+
 is_local = 'SERVER_SOFTWARE' not in os.environ
 is_sae = 'SERVER_SOFTWARE' in os.environ
+
+#----------------
 
 db_host = '127.0.0.1'
 db_port = 3306
@@ -42,6 +47,8 @@ db_name2 = 'pxblog'
 
 # 数据库连接超时(秒)
 max_idle_time = 10
+
+#----------------
 
 if is_sae:
     import sae.const

@@ -8,6 +8,7 @@ def get_paged(handler):
     """ 页码 """
     return handler.get_argument('paged', '1')
 
+
 class BlogHandler(RequestHandler):
     """ 所有Handler基类 """
 
@@ -20,21 +21,15 @@ class BlogHandler(RequestHandler):
     def write_json(self, obj):
         self.write(json.dumps(obj))
 
-    def check_login(self):
-        return self.get_current_user()
-
     def render(self, template_name, root=None):
         # 添加方法到模板
         kwargs = merge_dict(root, all_funcs)
         # 移除self
         if kwargs.has_key('self'):
             del kwargs['self']
-        # 生成html
+            # 生成html
         html = self.render_string(template_name, **kwargs)
-        html += '<!-- generated when %s -->' % fmt_time()
-
-        import time
-        print time.clock()
+        html += '<!-- generated when %s, use %fms -->' % (fmt_time(), self.request.request_time())
 
         self.write(html)
         return html
