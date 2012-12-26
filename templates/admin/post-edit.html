@@ -1,20 +1,22 @@
-<#include "inc/header.ftl">
+{% extends "_body.html" %}
+
+{% block content %}
 
 <h1>文章编辑</h1>
 
-<form action="${ctxPath}/admin/post-edit/${post.id}" method="post" id="editform">
-	<input type="hidden" name="id" id="id" value="${post.id}">
+<form action="/admin/post-edit" method="post" id="editform">
+	<input type="hidden" name="id" id="id" value="{{ post.id }}">
 	<table width="100%"><tr>
 		<td id="post-edit" valign="top">
 		
 			<label for="title">标题</label><br>
-			<input type="text" name="title" id="title" class="shadowfocus" placeholder="请输入标题" value="${post.title!}">
+			<input type="text" name="title" id="title" class="shadowfocus" placeholder="请输入标题" value="{{ post.title }}">
 			<div style="height: 20px;"></div>
 			
 			<label for="wmd-input">内容</label>
 			<div id="wmd-editor" class="wmd-panel rbox">
 				<div id="wmd-button-bar"></div>
-				<textarea id="wmd-input" name="content" placeholder="在这里尽情书写吧...">${post.content!}</textarea>
+				<textarea id="wmd-input" name="content" placeholder="在这里尽情书写吧...">{{ post.content }}</textarea>
 			</div>
 			<div id="wmd-preview" class="wmd-panel"></div>
 			<div id="wmd-output" class="wmd-panel"></div>
@@ -31,50 +33,53 @@
 		
 			<label>设置标签</label>
 			<ul id="tag-list">
-			<#list tags as tag>
-				<li><input type="checkbox" name="tagid" value="${tag.id}" ${post.tags?seq_contains(tag)?string("checked","")}>${tag.name}</li>
-			</#list>
+			{% for tag in get_tags() %}
+				<li><input type="checkbox" name="tagid" value="{{ tag.id }}">{{ tag.name }}</li>
+			{% end %}
 			</ul>
 			<input type="text" id="newtagname" class="shadowfocus" placeholder="新标签" onkeyup="addNewTag()">
 			
 			<label>置顶</label>
 			<select name="top" class="shadowfocus">
-				<option value="0" <#if post.top==0>selected</#if>>否</option>
-				<option value="1" <#if post.top==1>selected</#if>>是</option>
+				<option value="0" {{ if_out(post.top==0, 'selected') }}>否</option>
+				<option value="1" {{ if_out(post.top==1, 'selected') }}>是</option>
 			</select>
 			
 			<label>类型</label>
 			<select name="type" class="shadowfocus">
-				<option value="post" <#if post.type=='post'>selected</#if>>文章</option>
-				<option value="page" <#if post.type=='page'>selected</#if>>页面</option>
+				<option value="post" {{ if_out(post.type=='post', 'selected') }}>文章</option>
+				<option value="page" {{ if_out(post.type=='page', 'selected') }}>页面</option>
 			</select>
 			
 			<label>状态</label>
 			<select name="status" class="shadowfocus">
-				<option value="publish" <#if post.status=='publish'>selected</#if>>公开</option>
-				<option value="draft" <#if post.status=='draft'>selected</#if>>草稿</option>
-				<option value="private" <#if post.status=='private'>selected</#if>>私有</option>
-				<option value="password" <#if post.status=='password'>selected</#if>>加密</option>
+				<option value="publish" {{ if_out(post.status=='publish', 'selected') }}>公开</option>
+				<option value="draft" {{ if_out(post.status=='draft', 'selected') }}>草稿</option>
+				<option value="private" {{ if_out(post.status=='private', 'selected') }}>私有</option>
+				<option value="password" {{ if_out(post.status=='password', 'selected') }}>加密</option>
 			</select>
-			
-			<label>链接</label>
-			<textarea name="url" class="shadowfocus" placeholder="">${post.url}</textarea>
+
+            <label>访问密码</label>
+            <input type="text" name="password" class="shadowfocus" placeholder="密码" value="{{ post.password }}">
+
+            <label>链接</label>
+			<textarea name="url" class="shadowfocus" placeholder="">{{ post.url }}</textarea>
 			
 		</td>
 	</tr></table>
 	
 </form>
 
-<link rel="stylesheet" type="text/css" href="${adminPath}/js/markdown/wmd.css" />
+<link rel="stylesheet" type="text/css" href="{{ static_url('admin/js/markdown/wmd.css') }}" />
 
 <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="${adminPath}/js/markdown/wmd.js"></script>
-<script type="text/javascript" src="${adminPath}/js/markdown/showdown.js"></script>
-<script type="text/javascript" src="${adminPath}/js/wmd-pack.js"></script>
-<script type="text/javascript" src="${adminPath}/js/jquery.upload.js"></script>
+<script type="text/javascript" src="{{ static_url('admin/js/markdown/wmd.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('admin/js/markdown/showdown.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('admin/js/wmd-pack.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('admin/js/jquery.upload.js') }}"></script>
 <script type="text/javascript">
 convertHTMLWhenSubmit = false;
-WEB_ROOT = "${ctxPath}";
+WEB_ROOT = "";
 
 $(function() {
 	var li = $("#tag-list li");
@@ -119,7 +124,7 @@ function addNewTag() {
 	}
 	
 	$.ajax({
-		url: "${ctxPath}/admin/tag-edit",
+		url: "/admin/tag-edit",
 		data: { "name": name },
 		type: "POST",
 		success: function(tagid) {
@@ -133,7 +138,7 @@ function addNewTag() {
 }
 
 function cancel() {
-	location = "${ctxPath}/admin/post-query?type=post"
+	location = "/admin/post-query?type=post"
 }
 
 // 提交表单
@@ -171,11 +176,10 @@ function save() {
 		},
 		success: function(postid) {
 			$("#id").val(postid);
-			f.attr("action", "${ctxPath}/admin/post-edit/" + postid);
 			alert("保存成功!");
 		}
 	});
 }
 
 </script>
-<#include "inc/footer.ftl">
+{% end %}

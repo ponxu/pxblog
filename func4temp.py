@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import os
-import time
-from setting import *
+from model import *
+from setting import page_size
 
 def option(name):
-    return 'bloginfo-%s' % name
+    return Option.get(name)
 
 
 def get_posts(paged, max=page_size):
@@ -16,9 +15,15 @@ def get_pages(max=page_size):
 
 
 def get_tags():
-    return [2, 3, 4, 8, 9]
+    return Tag.all()
 
 
+def if_out(flag, out):
+    if flag:
+        return out
+    return ''
+
+"""
 # 带上theme, 如果以<theme_admin>开头, 不加theme
 def theme_path(filename):
     if filename[:1] == '/':
@@ -45,18 +50,10 @@ def _file_version(filename):
         return str(time.strftime("%Y%m%d%H%M%S", t))
     except:
         return '0'
+"""
 
 all_funcs = locals()
 
 # Test
 if __name__ == "__main__":
     print all_funcs
-    print '-----------------'
-
-    print theme_path('home.html')
-    print theme_path('/home.html')
-    print theme_path('admin/home.html')
-
-    print static_path('home.html')
-    print static_path('/home.html', True)
-    print static_path('admin/home.html')

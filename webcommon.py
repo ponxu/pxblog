@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
+from math import ceil
 from tornado.web import RequestHandler
 from func4temp import all_funcs
-from utils import *
+from utils import merge_dict, fmt_time
+from setting import page_size, is_debug
+
 
 def get_paged(handler):
     """ 页码 """
@@ -12,13 +15,15 @@ def get_paged(handler):
 class BlogHandler(RequestHandler):
     """ 所有Handler基类 """
 
-    def write_error(self, status_code, **kwargs):
-        self.write("您访问的资源可能已经不存在, <a href='/'>返回首页</a>")
+    if not is_debug:
+        def write_error(self, status_code, **kwargs):
+            self.write("您访问的资源可能已经不存在, <a href='/'>返回首页</a>")
 
     def get_current_user(self):
-        return self.get_secure_cookie("user")
+        # return self.get_secure_cookie("user")
+        return 'test_user'
 
-    def write_json(self, obj):
+    def render_json(self, obj):
         self.write(json.dumps(obj))
 
     def render(self, template_name, root=None):
@@ -38,10 +43,19 @@ class BlogHandler(RequestHandler):
 class PageInfo:
     """ 分页信息封装 """
 
-    def __init__(self, currentPage, url, total):
-        self.url = url
+    def __init__(self, paged, total, url, paged_size=page_size):
+        self.paged = paged
         self.total = total
-        self.currentPage = 0
-        self.totalPage = 0
-        self.prePage = 0
-        self.nextPage = 0
+        self.url = url
+        self.paged_size = paged_size
+        self.pages = int(ceil(float(total) / float(paged_size)))
+        self.pre = (paged > 1) and (paged - 1) or 1
+        self.next = (paged < self.pages) and (paged + 1) or self.pages
+
+        if '?' in url:
+            paged_url = url + '&paged='
+        else:
+            paged_url = url + '?paged='
+
+        self.pre_url = paged_url + str(self.pre)
+        self.next_url = paged_url + str(self.next)

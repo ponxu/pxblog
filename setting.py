@@ -22,14 +22,17 @@ tpage = '%s/page.html' % theme
 
 tadmin_post_edit = '%s/post-edit.html' % theme_admin
 tadmin_post_list = '%s/post-list.html' % theme_admin
-tadmin_setting = '%s/setting.html' % theme_admin
+tadmin_option = '%s/option.html' % theme_admin
 tadmin_tag = '%s/tag.html' % theme_admin
 tadmin_login = '%s/login.html' % theme_admin
+tadmin_link = '%s/link.html' % theme_admin
 
 #----------------
 
 is_local = 'SERVER_SOFTWARE' not in os.environ
 is_sae = 'SERVER_SOFTWARE' in os.environ
+
+storage_domain = 'attachment'
 
 #----------------
 

@@ -25,13 +25,16 @@ class _Option:
             sql = 'insert into px_option(name,value,description) values(%s,%s,%s)'
             return mdb.execute_lastrowid(sql, name, value, description)
 
+    def all(self):
+        return sdb.query('select * from px_option order by id asc, name asc')
+
 Option = _Option()
 
 class _Tag:
     def get_by_id(self, id):
         return sdb.get('select * from px_tag where id=%s', id)
 
-    def query(self):
+    def all(self):
         return sdb.query('select * from px_tag order by sort desc, id asc')
 
     def add(self, name):
@@ -51,7 +54,7 @@ class _Link:
     def query(self, status=None):
         sql = 'select * form px_link'
         if status:
-            sql += " where status in ('%s')" % "','".join(to_list(status))
+            sql += " where status='%s'" % status
         sql += ' order by sort desc, id asc'
         return sdb.query(sql)
 
@@ -100,7 +103,7 @@ class _Post:
             post['url'],
             post['title'],
             post['content'],
-            post['addtime'],
+            now(),
             post['top'],
             post['status'],
             post['type'],
@@ -151,7 +154,7 @@ class _Post:
         mdb.execute_rowcount('delete from px_post_tag where post_id=%s', id)
         return mdb.execute_rowcount('delete from px_post where id=%s', id)
 
-    def query(self, page, page_size, type='post', status=None, keywords=None, tagid=None):
+    def query(self, paged, paged_size=page_size, type=None, status=None, keywords=None, tagid=None):
         """ 综合查询 """
         sql = 'select * from px_post'
         count_sql = 'select count(*) from px_post'
@@ -178,7 +181,7 @@ class _Post:
             sql += ' where ' + condition[5:]
             count_sql += ' where ' + condition[5:]
 
-        sql += ' order by top desc, id asc limit %d,%d' % ((page - 1) * page_size, page_size)
+        sql += ' order by top desc, id asc limit %d,%d' % ((paged - 1) * paged_size, paged_size)
 
         print sql
         print count_sql
@@ -186,20 +189,15 @@ class _Post:
         return self._set_tag(sdb.query(sql)), sdb.get(count_sql)['count(*)']
 
     def _set_tag(self, posts):
-        """ 设置标签信息 """
-        alltags = Tag.query()
-        posts_array = to_list(posts)
+        post_array = to_list(posts)
 
         # 查询文章和标签关联关系
-        postids = [post.id for post in posts_array]
+        postids = [post['id'] for post in post_array]
         relation = self._get_relation(postids)
 
         # 关联
-        for post in posts_array:
-            if not post.tags: post.tags = []
-            for tag in alltags:
-                if self._has_relation(post.id, tag.id, relation):
-                    post.tags.append(tag)
+        for post in post_array:
+            post['tags'] = filter(lambda tag: self._has_relation(post['id'], tag.id, relation), Tag.all())
 
         return posts
 
@@ -213,7 +211,11 @@ class _Post:
 
     def _get_relation(self, postids):
         """ 获取文章和标签的关系 """
-        return sdb.query('select * from px_post_tag where post_id in (%s)' % ','.join(to_list(postids)))
+        in_ids = ','.join([str(i) for i in to_list(postids)])
+        if in_ids:
+            return sdb.query('select * from px_post_tag where post_id in (%s)' % in_ids)
+        else:
+            return []
 
     def _add_tag(self, postid, tagid):
         """ 给文章添加一个标签 """
@@ -234,6 +236,5 @@ def create_init_table():
 
 # Test
 if __name__ == "__main__":
-    post = {}
-    post['123'] = 123
+    print Post.query(1)
 

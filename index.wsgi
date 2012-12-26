@@ -3,6 +3,7 @@ import tornado.wsgi
 import sae
 
 from blog import *
+from admin import *
 
 settings = {
     'debug': True,
@@ -10,14 +11,33 @@ settings = {
     'template_path': os.path.join(os.path.dirname(__file__), 'templates'),
     'cookie_secret': 'hello_secret',
     'login_url': '/login',
-    'xsrf_cookies': True,
+    #'xsrf_cookies': True,
     'gzip': True,
     'autoescape': None,
 }
 
 handlers = [
+    # -- blog ----------------------
     (r'/test', TestHandler),
     (r'/', Home),
+
+    # -- admin ---------------------
+    (r'/login', Login),
+    (r'/logout', Logout),
+
+    (r'/admin', PostEdit),
+    (r'/admin/post-query', PostQuery),
+    (r'/admin/post-edit', PostEdit),
+    (r'/admin/post-edit/(\d+)', PostEdit),
+    (r'/admin/post-del/(\d+)', PostDelete),
+
+    (r'/admin/tag-edit', TagEdit),
+    (r'/admin/tag-del/(\d+)', TagDelete),
+
+    (r'/admin/link-edit', LinkEdit),
+    (r'/admin/link-del/(\d+)', LinkDelete),
+
+    (r'/admin/option-edit', OptionEdit),
 ]
 
 app = tornado.wsgi.WSGIApplication(handlers, **settings)
@@ -27,5 +47,5 @@ application = sae.create_wsgi_app(app)
 if __name__ == '__main__':
     import wsgiref.simple_server
 
-    server = wsgiref.simple_server.make_server('', 8888, app)
+    server = wsgiref.simple_server.make_server('', 8080, app)
     server.serve_forever()
