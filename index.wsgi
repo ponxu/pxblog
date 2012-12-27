@@ -22,6 +22,8 @@ handlers = [
     (r'/post/(\d+)', PostDetail),
     (r'/note/(\d+)', PostDetail),
     (r'/page/(.+)', PageDetail),
+    (r'/tag/(\d+)', SearchByTag),
+    (r'/search', Search),
 
     # -- admin ---------------------
     (r'/login', Login),
@@ -40,6 +42,8 @@ handlers = [
     (r'/admin/link-del/(\d+)', LinkDelete),
 
     (r'/admin/option', OptionEdit),
+    (r'/admin/upload', FileManage),
+    (r'/attachment/(.+)', FileManage),
 ]
 
 app = tornado.wsgi.WSGIApplication(handlers, **settings)

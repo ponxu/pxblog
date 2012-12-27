@@ -1,7 +1,4 @@
-<html>
-<body>
-<h1>${bloginfo('title')}</h1>
-<table>
-</table>
-</body>
-</html>
+{% extends "_body.html" %}
+{% block content %}
+{% include "_list.html" %}
+{% end %}

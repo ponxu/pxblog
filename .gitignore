@@ -38,3 +38,4 @@ nosetests.xml
 /saecloud2.bat
 /table.pdb
 /templates/simple/*.cache
+/attachment

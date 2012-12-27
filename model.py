@@ -210,8 +210,6 @@ class _Post:
         # 分页
         sql += ' limit %d,%d' % ((paged - 1) * paged_size, paged_size)
 
-        print sql
-
         return self._set_tag(sdb.query(sql)), sdb.get(count_sql)['count(*)']
 
     def _set_tag(self, posts):

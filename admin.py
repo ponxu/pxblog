@@ -153,15 +153,15 @@ class LinkDelete(BlogHandler):
 
 #===========================================================
 class FileManage(BlogHandler):
-    def get(self):
-        pass
+    def get(self, filename):
+        self.write(read(filename))
 
     def post(self):
         file = self.request.files['filedata'][0]
-        saved_file_name = "%d%s" % (str(now()), file['filename'])
+        saved_file_name = "%d%s" % (now(), file['filename'])
         data = file['body']
         url = save(saved_file_name, data)
-        self.render_json(url)
+        self.write(url)
 
 #===========================================================
 class Login(BlogHandler):

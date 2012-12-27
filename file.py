@@ -18,11 +18,36 @@ if is_sae:
         return data
 
 else:
+    import os
+
+    def _path(name):
+        folder = os.path.join(os.path.dirname(__file__), 'attachment')
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        return '%s/%s' % (folder, name)
+
     def save(name, data):
-        print 'save %s' % name
-        return 'http://www.baidu.com/1.jpg'
+        f = None
+        try:
+            f = open(_path(name), 'wb')
+            f.write(data)
+        except:
+            pass
+        finally:
+            if f: f.close()
+        return '/attachment/' + name
 
 
     def read(name):
-        print 'read %s' % name
-        return None
+        f = None
+        try:
+            f = open(_path(name), 'rb')
+            return f.read()
+        except:
+            pass
+        finally:
+            if f: f.close()
+
+if __name__ == '__main__':
+    print read('1.txt')
+    print save('1.txt', '1111111111111111111111')
