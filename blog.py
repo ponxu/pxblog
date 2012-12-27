@@ -2,36 +2,27 @@
 from webcommon import *
 from cache import cache_page
 from setting import *
+from model import *
 
-###############################################################################
-# common #######################################################################
-###############################################################################
-
-###############################################################################
-# blog #########################################################################
-###############################################################################
-
-class TestHandler(BlogHandler):
-    @cache_page('page_test')
-    def get(self):
-        title = 'My title'
-        return self.render('test.tpl', locals())
 
 class Home(BlogHandler):
     @cache_page('page_index_', get_paged)
     def get(self):
         paged = get_paged(self)
+        posts, total = Post.query(paged, type='post', status=['publish', 'password'])
+        page_info = PageInfo(paged, total, '/')
         return self.render(thome, locals())
 
-###############################################################################
-# admin ########################################################################
-###############################################################################
 
-###############################################################################
-# other ########################################################################
-###############################################################################
+class PostDetail(BlogHandler):
+    @cache_page('page_post_', lambda handler, id: id)
+    def get(self, id):
+        post = Post.get_by_id(int(id))
+        return self.render(tpost, locals())
 
 
-###############################################################################
-# 模板 #########################################################################
-###############################################################################
+class PageDetail(BlogHandler):
+    @cache_page('page_page_', lambda handler, url: url)
+    def get(self, url):
+        page = Post.get_by_url(url)
+        return self.render(tpage, locals())

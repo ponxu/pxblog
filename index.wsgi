@@ -18,8 +18,10 @@ settings = {
 
 handlers = [
     # -- blog ----------------------
-    (r'/test', TestHandler),
     (r'/', Home),
+    (r'/post/(\d+)', PostDetail),
+    (r'/note/(\d+)', PostDetail),
+    (r'/page/(.+)', PageDetail),
 
     # -- admin ---------------------
     (r'/login', Login),

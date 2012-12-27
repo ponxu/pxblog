@@ -1,8 +1,4 @@
-<html>
-<body>
-
-测试
-
-<h1>{{option('title')}}</h1>paged: {{ paged }}
-</body>
-</html>
+{% extends "_body.html" %}
+{% block content %}
+{% include "_list.html" %}
+{% end %}

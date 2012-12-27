@@ -1,7 +1,34 @@
-<html>
-<body>
-<h1>${bloginfo('title')}</h1>
-<table>
-</table>
-</body>
-</html>
+{% extends "_body.html" %}
+{% block title %}{{post.title}} | {{option('title')}}{% end %}
+{% block content %}
+<div class="post">
+    <h1>{{post.title}}</h1>
+    <div class="post-info">
+        发布于: {{fmt(post.addtime)}}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        {% if post.tags %}
+        标签:
+        {% for tag in post.tags %}
+        <a href="/tag/{{tag.id}}" class="taga">{{tag.name}}</a>&nbsp;
+        {% end %}
+        {% end %}
+    </div>
+    <div class="post-content">{{html(post.content)}}</div>
+</div>
+{% set relative_posts = get_relative_posts(post) %}
+{% if relative_posts %}
+<div class="relative-post">
+    <b>您可能也喜欢：</b>
+    <ul>
+        {% for rpost in relative_posts %}
+        <li><a href="/post/{{rpost.id}}">{{rpost.title}}</a></li>
+        {% end %}
+    </ul>
+</div>
+{% end %}
+
+{% include "_prettify.html" %}
+
+{{option('commentcode')}}
+
+{% end %}

@@ -102,9 +102,14 @@ class OptionEdit(BlogHandler):
     @authenticated
     def post(self):
         id = int(self.get_argument('id', '0'))
-        name = self.get_argument('name')
-        value = self.get_argument('value')
-        description = self.get_argument('description')
+        name = self.get_argument('name', '')
+        value = self.get_argument('value', '')
+        description = self.get_argument('description', '')
+
+        if name == 'password':
+            old = Option.get('password')
+            if value <> old:
+                value = md5(value)
 
         if id == 0:
             id = Option.set(name, value, description)

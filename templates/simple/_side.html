@@ -1,0 +1,19 @@
+<div id="side" class="right">
+    <div class="widget">
+        <b>标签</b>
+        <ul>
+            {% for tag in get_tags() %}
+            <li><a href="/tag/{{tag.id}}">{{tag.name}}</a></li>
+            {% end %}
+        </ul>
+    </div>
+
+    <div class="widget">
+        <b>最新文章</b>
+        <ul>
+            {% for lpost in get_latest_posts() %}
+            <li><a href="/post/{{lpost.id}}">{{lpost.title}}</a></li>
+            {% end %}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+{% extends "_body.html" %}
+{% block content %}
+<h1>设置</h1>
+<table width="100%" class="listt">
+	<tbody>
+	{% for op in options %}
+	<tr id="tr{{op.name}}">
+		<td width="120" align="right">
+            {{op.description}}:
+            <input type="hidden" name="id" id="id{{op.name}}" value="{{op.id}}" >
+            <input type="hidden" name="name" id="name{{op.name}}" value="{{op.name}}" >
+        </td>
+		<td>
+			<textarea name="value"
+                      id="value{{op.name}}"
+                      class="shadowfocus"
+                      style="width: 95%; height: 50px;">{{op.value}}</textarea>
+		</td>
+		<td width="50">
+			<input type="button" class="btn2 shadowhover2" value="修改" onclick="save('{{op.name}}')">
+		</td>
+	</tr>
+    {% end %}
+	<tr id="trnew">
+		<td width="120" align="right">新增: </td>
+		<td>
+            <input type="hidden" name="id" id="idnew" value="0" >
+			说明:<input type="text" name="description" id="descriptionnew" >
+            &nbsp;
+			代码:<input type="text" name="name" id="namenew" >
+			<textarea name="value" id="valuenew" class="shadowfocus" style="width: 95%; height: 50px;"></textarea>
+		</td>
+		<td width="50">
+			<input type="button" class="btn2 shadowhover2" value="保存" onclick="save('new')">
+		</td>
+	</tr>
+	</tbody>
+</table>
+
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+function save(name) {
+	$.ajax({
+		url: "/admin/option",
+		data: {
+            id: $("#id" + name).val(),
+            name: $("#name" + name).val(),
+            value: $("#value" + name).val(),
+            description: $("#description" + name).val()
+        },
+		type: "POST",
+		success: function(tagid) {
+			if (tagid > 0) location.reload();
+            else alert('失败!');
+		}
+	});
+}
+</script>
+{% end %}

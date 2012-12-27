@@ -17,8 +17,8 @@ class _Option:
             return None
 
     def set(self, name, value, description=''):
-        exists = self.get(name)
-        if exists:
+        old = self.get(name)
+        if old is not None:
             sql = 'update px_option set value=%s where name=%s'
             return mdb.execute_rowcount(sql, value, name)
         else:
@@ -154,16 +154,29 @@ class _Post:
         mdb.execute_rowcount('delete from px_post_tag where post_id=%s', id)
         return mdb.execute_rowcount('delete from px_post where id=%s', id)
 
-    def query(self, paged, paged_size=page_size, type=None, status=None, keywords=None, tagid=None):
+    def query(self, paged,
+              paged_size=page_size,
+              type=None,
+              status=None,
+              keywords=None,
+              tagid=None,
+              other_condition=None,
+              order='top desc, id desc'):
         """ 综合查询 """
-        sql = 'select * from px_post'
+        sql = 'select id,url,title,left(content, %d) as content,addtime,top,status,type,password from px_post' % sublength
         count_sql = 'select count(*) from px_post'
 
+        #----where------------------------------------------------------
         condition = ''
+        # 类型
         if type:
             condition += " and type='%s'" % type
+
+        # 状态
         if status:
             condition += " and status in ('%s')" % "','".join(to_list(status))
+
+        # 关键字
         if keywords:
             like = ""
             for kw in keywords.split(' '):
@@ -172,19 +185,32 @@ class _Post:
                     like += " or content like '%%%%%s%%%%'" % kw
             if like:
                 condition += ' and (' + like[4:] + ')'
+
+        # 标签
         if tagid:
             condition += (
                 ' and exists (select tag_id from px_post_tag pt where px_post.id=pt.post_id and tag_id in (%s))'
                 % ','.join([str(d) for d in to_list(tagid)]))
 
+        # 其他条件
+        if other_condition:
+            condition += ' and %s' % other_condition
+
+        # where
         if condition:
             sql += ' where ' + condition[5:]
             count_sql += ' where ' + condition[5:]
 
-        sql += ' order by top desc, id asc limit %d,%d' % ((paged - 1) * paged_size, paged_size)
+        #----------------------------------------------------------
+
+        # 排序
+        if order:
+            sql += ' order by %s' % order
+
+        # 分页
+        sql += ' limit %d,%d' % ((paged - 1) * paged_size, paged_size)
 
         print sql
-        print count_sql
 
         return self._set_tag(sdb.query(sql)), sdb.get(count_sql)['count(*)']
 

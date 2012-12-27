@@ -1,6 +1,6 @@
 {% extends "_body.html" %}
 {% block content %}
-<h1>列表</h1>
+<h1>发布列表</h1>
 <table width="100%" class="listt">
 	<thead>
 		<tr>
@@ -19,9 +19,9 @@
 			<a href="/admin/post-edit/{{ post.id }}">
                 {{ if_out(post.top==1, '[置顶]') }}{{ post.title }}
 			</a>
-            <div style="margin-top: 5px; font-size: 10px;">
+            <div style="margin-top: 5px;">
             {% for tag in post.tags %}
-            <span>{{ tag.name }}</span>
+            <span class="s">{{ tag.name }}</span>
             {% end %}
             </div>
 		</td>
@@ -38,19 +38,19 @@
 
 <div class="navbar">
     {%if page_info.paged>1 %}
-    <a href="{{ page_info.pre_url }}" class="left">上一页</a>
+    <a href="{{ page_info.pre_url }}" class="s">上一页</a>
     {% end %}
 
     {% for i in range(page_info.paged-5, page_info.paged+5) %}
         {% if i>=1 and i<=page_info.pages %}
-            <a href="{{ page_info.paged_url }}{{ i }}" {{ if_out(i==page_info.paged, 'class="current"') }}>
+            <a href="{{ page_info.paged_url }}{{ i }}" class="s{{if_out(i==page_info.paged,' current')}}">
                 {{i}}
             </a>
         {% end %}
     {% end %}
 
     {% if page_info.paged<page_info.pages %}
-    <a href="{{ page_info.next_url }}" class="right">下一页</a>
+    <a href="{{ page_info.next_url }}" class="s">下一页</a>
     {% end %}
 </div>
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% block title %}{{option('title')}}{% end %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ static_url('simple/style.css') }}" />
+</head>
+<body>
+<div id="main">
+    <div id="header">
+        <div class="left">
+            <h1><a href="/">{{option('title')}}</a></h1>
+            <span id="subtitle">{{option('subtitle')}}</span>
+        </div>
+        <div class="right" id="sdiv">
+            <form id="sform" action="/search" method="get">
+                <input id="sinput" type="text" name="s">
+                <input id="sbtn" type="submit" value="搜索">
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div id="pagenav">
+        <a href="/">首页</a>
+        {% for pg in get_pages() %}
+        <a href="/page/{{pg.url}}">{{pg.title}}</a>
+        {% end %}
+    </div>
+
+
+    <div id="content" class="left">
+        {% block content %}{% end %}
+    </div>
+    {% include "_side.html" %}
+
+    <div class="clear"></div>
+
+    <div id="footer">
+        <a href="http://www.ponxu.com">Power By Pxblog</a>
+        | <a href="/admin">Admin</a>
+        {% if option('analyticscode') %}
+        | {{ option('analyticscode') }}
+        {% end %}
+    </div>
+</div> <!-- end main -->
+</body>
+</html>

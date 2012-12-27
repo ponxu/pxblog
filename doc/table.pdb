@@ -1736,7 +1736,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Code>px_post</a:Code>
 <a:CreationDate>1354073773</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1356574768</a:ModificationDate>
+<a:ModificationDate>1356072328</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Columns>
 <o:Column Id="o25">
@@ -1757,7 +1757,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Code>url</a:Code>
 <a:CreationDate>1354079850</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1356574768</a:ModificationDate>
+<a:ModificationDate>1356077661</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <a:DataType>varchar(200)</a:DataType>
 <a:Length>200</a:Length>
@@ -1859,6 +1859,22 @@ TableComment 0 新宋体,8,N</a:FontList>
 <o:Column Ref="o25"/>
 </c:Key.Columns>
 </o:Key>
+<o:Key Id="o35">
+<a:ObjectID>B36CAB14-B149-416F-80E5-15D59895C382</a:ObjectID>
+<a:Name>UNI_POST_URL</a:Name>
+<a:Code>UNI_POST_URL</a:Code>
+<a:CreationDate>1355996728</a:CreationDate>
+<a:Creator>Administrator</a:Creator>
+<a:ModificationDate>1355996741</a:ModificationDate>
+<a:Modifier>Administrator</a:Modifier>
+<a:ConstraintName>UNI_POST_URL</a:ConstraintName>
+<a:ExtendedAttributesText>{F4F16ECD-F2F1-4006-AF6F-638D5C65F35E},MYSQL50,57={D1C795B8-8F7B-4AA7-A240-85C5B737C543},ExtUnique,4=true
+
+</a:ExtendedAttributesText>
+<c:Key.Columns>
+<o:Column Ref="o26"/>
+</c:Key.Columns>
+</o:Key>
 </c:Keys>
 <c:PrimaryKey>
 <o:Key Ref="o34"/>
@@ -1873,7 +1889,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1356072324</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Columns>
-<o:Column Id="o35">
+<o:Column Id="o36">
 <a:ObjectID>D7B4BB1A-8EC0-40B4-BCD6-D6CA0E749BA1</a:ObjectID>
 <a:Name>id</a:Name>
 <a:Code>id</a:Code>
@@ -1885,7 +1901,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Identity>1</a:Identity>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
-<o:Column Id="o36">
+<o:Column Id="o37">
 <a:ObjectID>45BC45C2-D08F-42D6-858F-762A85FCD682</a:ObjectID>
 <a:Name>name</a:Name>
 <a:Code>name</a:Code>
@@ -1897,7 +1913,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Length>50</a:Length>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
-<o:Column Id="o37">
+<o:Column Id="o38">
 <a:ObjectID>574E5742-DE81-439F-AA89-F32F9024E9EB</a:ObjectID>
 <a:Name>sort</a:Name>
 <a:Code>sort</a:Code>
@@ -1908,7 +1924,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:DefaultValue>0</a:DefaultValue>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o38">
+<o:Column Id="o39">
 <a:ObjectID>9DC22CD2-6337-4FE2-96AF-CD631EBB7B6B</a:ObjectID>
 <a:Name>post_count</a:Name>
 <a:Code>post_count</a:Code>
@@ -1921,7 +1937,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o39">
+<o:Key Id="o40">
 <a:ObjectID>02D867AE-F88D-40D9-AE50-92545237A153</a:ObjectID>
 <a:Name>PK</a:Name>
 <a:Code>PK</a:Code>
@@ -1933,10 +1949,10 @@ TableComment 0 新宋体,8,N</a:FontList>
 
 </a:ExtendedAttributesText>
 <c:Key.Columns>
-<o:Column Ref="o35"/>
+<o:Column Ref="o36"/>
 </c:Key.Columns>
 </o:Key>
-<o:Key Id="o40">
+<o:Key Id="o41">
 <a:ObjectID>04676F17-1FAB-4448-BED3-21F882CE7C22</a:ObjectID>
 <a:Name>UNI_TAG_NAME</a:Name>
 <a:Code>UNI_TAG_NAME</a:Code>
@@ -1949,12 +1965,12 @@ TableComment 0 新宋体,8,N</a:FontList>
 
 </a:ExtendedAttributesText>
 <c:Key.Columns>
-<o:Column Ref="o36"/>
+<o:Column Ref="o37"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o39"/>
+<o:Key Ref="o40"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o16">
@@ -1966,7 +1982,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1356077635</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Columns>
-<o:Column Id="o41">
+<o:Column Id="o42">
 <a:ObjectID>F576F6C5-1BB0-49AB-B1C3-E461D9A15B01</a:ObjectID>
 <a:Name>post_id</a:Name>
 <a:Code>post_id</a:Code>
@@ -1977,7 +1993,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:DataType>int</a:DataType>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
-<o:Column Id="o42">
+<o:Column Id="o43">
 <a:ObjectID>02EE4654-F7E0-4D6B-B595-B42A4187A9D9</a:ObjectID>
 <a:Name>tag_id</a:Name>
 <a:Code>tag_id</a:Code>
@@ -1990,7 +2006,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o43">
+<o:Key Id="o44">
 <a:ObjectID>0C8326B8-EA31-4105-948B-0266B5374878</a:ObjectID>
 <a:Name>Key_1</a:Name>
 <a:Code>Key_1</a:Code>
@@ -1999,13 +2015,13 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1356077635</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o41"/>
 <o:Column Ref="o42"/>
+<o:Column Ref="o43"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o43"/>
+<o:Key Ref="o44"/>
 </c:PrimaryKey>
 </o:Table>
 <o:Table Id="o18">
@@ -2017,7 +2033,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1356154279</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Columns>
-<o:Column Id="o44">
+<o:Column Id="o45">
 <a:ObjectID>7B9D4BC6-20D8-41DF-9D49-138A11E4A74D</a:ObjectID>
 <a:Name>id</a:Name>
 <a:Code>id</a:Code>
@@ -2029,7 +2045,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Identity>1</a:Identity>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
-<o:Column Id="o45">
+<o:Column Id="o46">
 <a:ObjectID>5791A21E-2F70-43C6-B422-6BB3DE45D82C</a:ObjectID>
 <a:Name>name</a:Name>
 <a:Code>name</a:Code>
@@ -2041,7 +2057,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Length>50</a:Length>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
-<o:Column Id="o46">
+<o:Column Id="o47">
 <a:ObjectID>24503D95-2AE1-47F9-8C68-C0B64F6A4C02</a:ObjectID>
 <a:Name>sort</a:Name>
 <a:Code>sort</a:Code>
@@ -2052,7 +2068,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:DefaultValue>0</a:DefaultValue>
 <a:DataType>int</a:DataType>
 </o:Column>
-<o:Column Id="o47">
+<o:Column Id="o48">
 <a:ObjectID>61F3EA3B-ABAE-40FA-96C8-E29EAA152F34</a:ObjectID>
 <a:Name>description</a:Name>
 <a:Code>description</a:Code>
@@ -2063,7 +2079,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(500)</a:DataType>
 <a:Length>500</a:Length>
 </o:Column>
-<o:Column Id="o48">
+<o:Column Id="o49">
 <a:ObjectID>F43A2404-F656-40C7-8ED7-6F0DF1D0DC9D</a:ObjectID>
 <a:Name>url</a:Name>
 <a:Code>url</a:Code>
@@ -2075,7 +2091,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:Length>200</a:Length>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
-<o:Column Id="o49">
+<o:Column Id="o50">
 <a:ObjectID>788DFCDD-03DD-46C9-9224-7789F21DB059</a:ObjectID>
 <a:Name>icon</a:Name>
 <a:Code>icon</a:Code>
@@ -2086,7 +2102,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:DataType>varchar(200)</a:DataType>
 <a:Length>200</a:Length>
 </o:Column>
-<o:Column Id="o50">
+<o:Column Id="o51">
 <a:ObjectID>BC5F38F0-E570-43BB-B066-95C4743E55F4</a:ObjectID>
 <a:Name>status</a:Name>
 <a:Code>status</a:Code>
@@ -2101,7 +2117,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 </o:Column>
 </c:Columns>
 <c:Keys>
-<o:Key Id="o51">
+<o:Key Id="o52">
 <a:ObjectID>F84CEE47-90A3-49D7-9A96-362B53936B42</a:ObjectID>
 <a:Name>PK</a:Name>
 <a:Code>PK</a:Code>
@@ -2110,10 +2126,10 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1356072454</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Key.Columns>
-<o:Column Ref="o44"/>
+<o:Column Ref="o45"/>
 </c:Key.Columns>
 </o:Key>
-<o:Key Id="o52">
+<o:Key Id="o53">
 <a:ObjectID>5D74BC09-F811-43A3-B58A-E597E81B6FD1</a:ObjectID>
 <a:Name>UNI_LINK_NAME</a:Name>
 <a:Code>UNI_LINK_NAME</a:Code>
@@ -2126,10 +2142,10 @@ TableComment 0 新宋体,8,N</a:FontList>
 
 </a:ExtendedAttributesText>
 <c:Key.Columns>
-<o:Column Ref="o45"/>
+<o:Column Ref="o46"/>
 </c:Key.Columns>
 </o:Key>
-<o:Key Id="o53">
+<o:Key Id="o54">
 <a:ObjectID>BAB32EB8-093A-4096-B6E9-551341FB614F</a:ObjectID>
 <a:Name>UNI_LINK_URL</a:Name>
 <a:Code>UNI_LINK_URL</a:Code>
@@ -2142,12 +2158,12 @@ TableComment 0 新宋体,8,N</a:FontList>
 
 </a:ExtendedAttributesText>
 <c:Key.Columns>
-<o:Column Ref="o48"/>
+<o:Column Ref="o49"/>
 </c:Key.Columns>
 </o:Key>
 </c:Keys>
 <c:PrimaryKey>
-<o:Key Ref="o51"/>
+<o:Key Ref="o52"/>
 </c:PrimaryKey>
 </o:Table>
 </c:Tables>
@@ -2170,20 +2186,20 @@ TableComment 0 新宋体,8,N</a:FontList>
 <o:Table Ref="o16"/>
 </c:ChildTable>
 <c:ParentKey>
-<o:Key Ref="o39"/>
+<o:Key Ref="o40"/>
 </c:ParentKey>
 <c:Joins>
-<o:ReferenceJoin Id="o54">
+<o:ReferenceJoin Id="o55">
 <a:ObjectID>9745E2D7-1835-4F4E-B317-D61B0A5AD90E</a:ObjectID>
 <a:CreationDate>1354080023</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
 <a:ModificationDate>1354080054</a:ModificationDate>
 <a:Modifier>Administrator</a:Modifier>
 <c:Object1>
-<o:Column Ref="o35"/>
+<o:Column Ref="o36"/>
 </c:Object1>
 <c:Object2>
-<o:Column Ref="o42"/>
+<o:Column Ref="o43"/>
 </c:Object2>
 </o:ReferenceJoin>
 </c:Joins>
@@ -2209,7 +2225,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <o:Key Ref="o34"/>
 </c:ParentKey>
 <c:Joins>
-<o:ReferenceJoin Id="o55">
+<o:ReferenceJoin Id="o56">
 <a:ObjectID>090C1A53-1339-4027-AD2A-E7E28D5E905E</a:ObjectID>
 <a:CreationDate>1354080024</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
@@ -2219,14 +2235,14 @@ TableComment 0 新宋体,8,N</a:FontList>
 <o:Column Ref="o25"/>
 </c:Object1>
 <c:Object2>
-<o:Column Ref="o41"/>
+<o:Column Ref="o42"/>
 </c:Object2>
 </o:ReferenceJoin>
 </c:Joins>
 </o:Reference>
 </c:References>
 <c:DefaultGroups>
-<o:Group Id="o56">
+<o:Group Id="o57">
 <a:ObjectID>E230D787-B613-48D3-A23C-40419A4C5356</a:ObjectID>
 <a:Name>PUBLIC</a:Name>
 <a:Code>PUBLIC</a:Code>
@@ -2237,7 +2253,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 </o:Group>
 </c:DefaultGroups>
 <c:TargetModels>
-<o:TargetModel Id="o57">
+<o:TargetModel Id="o58">
 <a:ObjectID>12D74C22-20C9-428C-AFF2-70C9F00110EC</a:ObjectID>
 <a:Name>MySQL 5.0</a:Name>
 <a:Code>MYSQL50</a:Code>

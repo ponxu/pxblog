@@ -1,0 +1,31 @@
+{% for post in posts %}
+<div class="post">
+    <h1><a href="/post/{{post.id}}">{{if_out(post.top==1,'[置顶]')}}{{post.title}}</a></h1>
+    <div class="post-info">
+        发布于: {{fmt(post.addtime)}}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        {% if post.tags %}
+            标签:
+            {% for tag in post.tags %}
+            <a href="/tag/{{tag.id}}" class="taga">{{tag.name}}</a>&nbsp;
+            {% end %}
+        {% end %}
+    </div>
+    <div class="post-content">{{html(post.content)}}</div>
+    <div class="post-readon"><a href="/post/{{post.id}}">继续阅读...</a></div>
+</div>
+{% end %}
+
+<div class="navbar">
+    {% if page_info.paged>1 %}
+    <a href="{{page_info.pre_url}}" class="left"><-更新</a>
+    {% end %}
+
+    {{page_info.paged}} of {{page_info.pages}}页 / 共{{page_info.total}}篇
+
+    {% if page_info.paged<page_info.pages %}
+    <a href="{{page_info.next_url}}" class="right">更旧-></a>
+    {% end %}
+
+    <div class="clear"></div>
+</div>

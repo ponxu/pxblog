@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import markdown2
 from model import *
 from setting import page_size
 from utils import fmt_time, now
@@ -7,16 +8,40 @@ def option(name):
     return Option.get(name)
 
 
-def get_posts(paged, max=page_size):
-    return [2, 3, 4, 8, 9]
+def get_latest_posts(max=10):
+    posts, total = Post.query(1, paged_size=max, type='post', status='publish', order='id desc')
+    return posts
+
+
+def get_posts(tagid=None, max=page_size):
+    posts, total = Post.query(1, paged_size=max, type='post', status='publish', tagid=tagid)
+    return posts
 
 
 def get_pages(max=page_size):
-    return [2, 3, 4, 8, 9]
+    pages, total = Post.query(1, paged_size=max, type='page', status='publish')
+    return pages
 
 
 def get_tags():
     return Tag.all()
+
+
+def get_relative_posts(post, max=5):
+    tagids = [tag.id for tag in post.tags]
+    posts, total = Post.query(1,
+        paged_size=max,
+        type='post',
+        status='publish',
+        tagid=tagids,
+        other_condition='id<>%d' % post.id,
+        order='rand()')
+    return posts
+
+
+def html(s):
+    """ markdown ==> html """
+    return markdown2.markdown(s)
 
 
 def if_out(flag, out):
@@ -65,3 +90,4 @@ all_funcs = locals()
 # Test
 if __name__ == "__main__":
     print friend_time(now() - 86300)
+    print html("*boo!*")

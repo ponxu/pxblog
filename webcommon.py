@@ -7,8 +7,9 @@ from utils import merge_dict, fmt_time
 from setting import page_size, is_debug
 
 
-def get_paged(handler):
+def get_paged(*args, **kwargs):
     """ 页码 """
+    handler = args[0]
     return int(handler.get_argument('paged', '1'))
 
 
