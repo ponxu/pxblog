@@ -44,7 +44,7 @@ else:
             f = open(_path(name), 'rb')
             return f.read()
         except:
-            pass
+            return ''
         finally:
             if f: f.close()
 

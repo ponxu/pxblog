@@ -3,8 +3,8 @@ from tornado import database
 from setting import *
 from utils import *
 
-mdb = sdb = database.Connection(db_host, db_name, db_user, db_passwd, max_idle_time)
-if is_sae: sdb = database.Connection(db_host2, db_name2, db_user2, db_passwd2, max_idle_time)
+mdb = sdb = database.Connection('%s:%s' % (db_host, db_port), db_name, db_user, db_passwd, max_idle_time)
+if is_sae: sdb = database.Connection('%s:%s' % (db_host2, db_port2), db_name2, db_user2, db_passwd2, max_idle_time)
 
 __all__ = ('Post', 'Tag', 'Option', 'Link')
 
