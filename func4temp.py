@@ -6,6 +6,14 @@ from utils import fmt_time, now
 
 def option(name):
     return Option.get(name)
+    
+    
+def get_newer_post(post):
+    pass
+    
+    
+def get_older_post(post):
+    pass
 
 
 def get_latest_posts(max=10):
