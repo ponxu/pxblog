@@ -2,9 +2,15 @@
 ======
 python blog!!
 
+TODO
+--------
+ 1. 基本文章维护功能
+ 2. 设置
+ 3. 
+
 使用技术
 --------
-bottle + Jinja2
+tornado, memcache, markdown2
 
 文件结构描述
 ------------
@@ -23,3 +29,4 @@ bottle + Jinja2
  * index.wsgi       main 入口
 
 (*)不依赖其他文件
+
