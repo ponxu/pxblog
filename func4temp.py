@@ -25,6 +25,7 @@ def get_newer_post(post):
         type='post',
         status='publish',
         other_condition='id>%d' % post.id,
+        order='id asc',
         total_need=False)
     if posts:
         return posts[0]
@@ -37,6 +38,7 @@ def get_older_post(post):
         type='post',
         status='publish',
         other_condition='id<%d' % post.id,
+        order='id desc',
         total_need=False)
     if posts:
         return posts[0]

@@ -150,6 +150,10 @@ a:hover {
 	text-align: center;
 }
 
+.pre_next {
+    margin: 5px;
+}
+
 /*----------------------------------*/
 #side {
 	width: 190px;

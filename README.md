@@ -11,7 +11,8 @@ TODO
  5. 缓存
  6. 上一篇/下一篇
  7. 链接维护
- 8. sitemap, rss`
+ 8. sitemap, rss, robots
+ 9. 密码访问限制`
 
 使用技术
 --------

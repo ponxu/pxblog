@@ -15,6 +15,21 @@
     </div>
     <div class="post-content">{{html(post.content)}}</div>
 </div>
+
+<div class="pre_next">
+    {% set older = get_older_post(post) %}
+    {% set newer = get_newer_post(post) %}
+
+    {% if older %}
+    <a href="/post/{{older.id}}" title="{{older.title}}" class="left">上一篇</a>
+    {% end %}
+
+    {% if newer %}
+    <a href="/post/{{newer.id}}" title="{{newer.title}}" class="right">下一篇</a>
+    {% end %}
+
+    <div class="clear"></div>
+</div>
 {% set relative_posts = get_relative_posts(post) %}
 {% if relative_posts %}
 <div class="relative-post">
