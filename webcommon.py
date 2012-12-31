@@ -21,8 +21,8 @@ class BlogHandler(RequestHandler):
             self.write("您访问的资源可能已经不存在, <a href='/'>返回首页</a>")
 
     def get_current_user(self):
-        # return self.get_secure_cookie("user")
-        return 'test_user'
+        if is_debug: return 'debug_user'
+        return self.get_secure_cookie("user")
 
     def render_json(self, obj):
         self.write(json.dumps(obj))
