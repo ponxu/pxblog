@@ -6,7 +6,7 @@ import os
 theme = 'simple'
 
 # 分页大小
-page_size = 5
+page_size = 15
 
 # 登录cookie超时(天)
 cookie_timeout = 7
@@ -15,11 +15,11 @@ cookie_timeout = 7
 is_cache_page = True
 
 # ===system(一般情况不需要修改)=========================
-is_debug = True
+is_debug = False
 is_sae = 'SERVER_SOFTWARE' in os.environ
 
 # 默认memcache缓存时间
-cache_time = 24 * 3600 # sec
+cache_time = 7 * 24 * 3600 # sec
 
 # 文章摘要截取长度
 sublength = 250
