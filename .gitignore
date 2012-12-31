@@ -39,3 +39,4 @@ nosetests.xml
 /table.pdb
 /templates/simple/*.cache
 /attachment
+/doc/table.pdb
