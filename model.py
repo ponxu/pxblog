@@ -52,7 +52,7 @@ Tag = _Tag()
 
 class _Link:
     def query(self, status=None):
-        sql = 'select * form px_link'
+        sql = 'select * from px_link'
         if status:
             sql += " where status='%s'" % status
         sql += ' order by sort desc, id asc'
@@ -154,19 +154,22 @@ class _Post:
         mdb.execute_rowcount('delete from px_post_tag where post_id=%s', id)
         return mdb.execute_rowcount('delete from px_post where id=%s', id)
 
-    def query(self, paged,
-              paged_size=page_size,
-              type=None,
-              status=None,
-              keywords=None,
-              tagid=None,
-              other_condition=None,
-              order='top desc, id desc'):
+    def query(self,
+              paged, # 第几页
+              paged_size=page_size, # 每页大小
+              type=None, # post类型, 'post'|['post','page']
+              status=None, # post状态, 'publish'|['publish', 'private']
+              keywords=None, # 模糊查询标题/内容
+              tagid=None, # post标签, 1|[1,2,3]
+              other_condition=None, # 其他条件, 'id>9'
+              order='top desc, id desc', # 排序
+              total_need=True # 是否需要统计总数量
+    ):
         """ 综合查询 """
-        sql = 'select id,url,title,left(content, %d) as content,addtime,top,status,type,password from px_post' % sublength
+        sql = 'select id,url,title,left(content,%d) as content,addtime,top,status,type,password from px_post' % sublength
         count_sql = 'select count(*) from px_post'
 
-        #----where------------------------------------------------------
+        #----where 条件 begin------------------------------------------------------
         condition = ''
         # 类型
         if type:
@@ -201,7 +204,7 @@ class _Post:
             sql += ' where ' + condition[5:]
             count_sql += ' where ' + condition[5:]
 
-        #----------------------------------------------------------
+        #----where 条件 end ------------------------------------------------------
 
         # 排序
         if order:
@@ -210,7 +213,8 @@ class _Post:
         # 分页
         sql += ' limit %d,%d' % ((paged - 1) * paged_size, paged_size)
 
-        return self._set_tag(sdb.query(sql)), sdb.get(count_sql)['count(*)']
+        if total_need: return self._set_tag(sdb.query(sql)), sdb.get(count_sql)['count(*)']
+        else: return self._set_tag(sdb.query(sql))
 
     def _set_tag(self, posts):
         """ 给文章设置标签信息 """
@@ -264,5 +268,5 @@ def create_init_table():
 
 # Test
 if __name__ == "__main__":
-    print Post.query(1)
+    print Post.query(1, total_need=False)
 

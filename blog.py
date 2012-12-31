@@ -46,3 +46,27 @@ class Search(BlogHandler):
         posts, total = Post.query(paged, type='post', status='publish', keywords=s)
         page_info = PageInfo(paged, total, url)
         return self.render(tlist, locals())
+
+#=====================================================================
+
+class Robots(BlogHandler):
+    @cache_page('page_robots')
+    def get(self):
+        return self.render(tseo_robots)
+
+    def request_time_info(self):
+        return ''
+
+
+class Sitemap(BlogHandler):
+    @cache_page('page_sitemap')
+    def get(self):
+        self.set_header('Content-Type', 'text/xml')
+        return self.render(tseo_sitemap)
+
+
+class RSS(BlogHandler):
+    @cache_page('page_rss')
+    def get(self):
+        self.set_header('Content-Type', 'text/xml')
+        return self.render(tseo_rss)

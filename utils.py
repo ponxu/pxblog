@@ -3,22 +3,25 @@ import hashlib
 import time
 from datetime import datetime, timedelta
 
-# 字典,像对象一样访问
+# 像访问对象一样, 访问字典
 class ObjectLikeDict(dict):
     def __getattr__(self, name):
         try:
             return self[name]
         except:
-            return ""
+            return ''
+
 
 # 合并字典
 def merge_dict(dict1, dict2):
     return (lambda a, b: (lambda a_copy: a_copy.update(b) or a_copy)(a.copy()))(dict1 or {}, dict2 or {})
 
+
 # 转数组
 def to_list(obj):
     if isinstance(obj, list): return obj
     else: return [obj]
+
 
 # 格式化时间, 默认返回当前时间
 def fmt_time(fmt='%Y-%m-%d %H:%M:%S', seconds=None):
@@ -26,6 +29,7 @@ def fmt_time(fmt='%Y-%m-%d %H:%M:%S', seconds=None):
     t = datetime.utcfromtimestamp(seconds)
     t = t + timedelta(hours=+8) # 时区
     return t.strftime(fmt)
+
 
 # 当前时间戳(精确到秒)
 def now():
@@ -38,10 +42,6 @@ def md5(s):
     m.digest()
     return m.hexdigest()
 
-def unicode2str(ustr):
-    if isinstance(ustr, unicode):
-        return ustr.encode('utf8')
-    return ustr
 
 # Test
 if __name__ == "__main__":

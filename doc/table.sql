@@ -26,9 +26,7 @@ create table px_link
    url                  varchar(200) not null,
    icon                 varchar(200),
    status               varchar(20) not null default 'hidden',
-   primary key (id),
-   unique key UNI_LINK_NAME (name),
-   unique key UNI_LINK_URL (url)
+   primary key (id)
 );
 
 /*==============================================================*/
@@ -80,8 +78,7 @@ create table px_tag
    name                 varchar(50) not null,
    sort                 int default 0,
    post_count           int default 0,
-   primary key (id),
-   unique key UNI_TAG_NAME (name)
+   primary key (id)
 );
 
 alter table px_post_tag add constraint FK_TO_POST foreign key (post_id)

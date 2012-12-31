@@ -1,0 +1,27 @@
+﻿<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>{{ option("title") }}</title>
+        <description>
+            <![CDATA[{{ option('subtitle') }}]]>
+        </description>
+        <link>{{ option('site_url') }}</link>
+        <language>zh-CN</language>
+        <copyright>Copyright 2003-2013, www.ponxu.com</copyright>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Pxblog - Python实现的一个简易博客</generator>
+        <atom:link href="{{ option('site_url') }}/rss" rel="self" type="application/rss+xml"/>
+        {% for post in get_latest_posts(20) %}
+        <item>
+            <title>{{ post.title }}</title>
+            <description>
+                <![CDATA[
+                    {{ html(post.content) }}
+                ]]>
+            </description>
+            <pubDate>{{ fmt(post.addtime) }}</pubDate>
+            <link>{{ option('site_url') }}/post/{{ post.id }}</link>
+            <guid isPermaLink="false">{{ option('site_url') }}/post/{{ post.id }}</guid>
+        </item>
+        {% end %}
+    </channel>
+</rss>

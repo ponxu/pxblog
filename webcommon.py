@@ -27,6 +27,9 @@ class BlogHandler(RequestHandler):
     def render_json(self, obj):
         self.write(json.dumps(obj))
 
+    def request_time_info(self):
+        return '<!-- generated when %s, use %fms -->' % (fmt_time(), self.request.request_time())
+
     def render(self, template_name, root=None):
         # 添加方法到模板
         kwargs = merge_dict(root, all_funcs)
@@ -35,7 +38,7 @@ class BlogHandler(RequestHandler):
             del kwargs['self']
             # 生成html
         html = self.render_string(template_name, **kwargs)
-        html += '<!-- generated when %s, use %fms -->' % (fmt_time(), self.request.request_time())
+        html += self.request_time_info()
 
         self.write(html)
         return html

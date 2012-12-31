@@ -40,6 +40,10 @@ tadmin_tag = 'admin/tag.html'
 tadmin_login = 'admin/login.html'
 tadmin_link = 'admin/link.html'
 
+tseo_robots = 'robots.txt'
+tseo_sitemap = 'sitemap.xml'
+tseo_rss = 'rss.xml'
+
 #---数据库-------------
 db_host = db_host2 = '127.0.0.1'
 db_port = db_port2 = 3306

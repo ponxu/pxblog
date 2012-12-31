@@ -1,59 +1,110 @@
 {% extends "_body.html" %}
 {% block content %}
 <h1>链接管理</h1>
-<table width="100%" class="listt">
-	<tbody>
-	{% for lk in links %}
-	<tr id="tr{{op.name}}">
-		<td width="120" align="right">
-            {{op.description}}:
-            <input type="hidden" name="id" id="id{{op.name}}" value="{{op.id}}" >
-            <input type="hidden" name="name" id="name{{op.name}}" value="{{op.name}}" >
-        </td>
-		<td>
-			<textarea name="value"
-                      id="value{{op.name}}"
-                      class="shadowfocus"
-                      style="width: 95%; height: 50px;">{{op.value}}</textarea>
-		</td>
-		<td width="50">
-			<input type="button" class="btn2 shadowhover2" value="修改" onclick="save('{{op.name}}')">
-		</td>
-	</tr>
+<div>
+    <div class="left link" style="background-color: #FFFFFF">
+        <form id="form0">
+            <input type="hidden" name="id" value="0">
+            名字:
+            <input type="text" name="name" class="shadowfocus"><br>
+            URL:
+            <input type="text" name="url" class="shadowfocus"><br>
+
+            状态:
+            <select name="status" class="shadowfocus">
+                <option value="hidden">隐藏</option>
+                <option value="visible">显示</option>
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;排序:
+            <input type="text" name="sort" class="shadowfocus" style="width: 100px;" value="0"><br>
+
+            描述:
+            <input type="text" name="description" class="shadowfocus"><br>
+            图标:
+            <input type="text" name="icon" class="shadowfocus"><br>
+
+            <p>
+                <input type="button" class="btn2 shadowhover2" value="新增" onclick="save(0)">
+            </p>
+        </form>
+    </div>
+
+    {% for lk in links %}
+    <div class="left link" id="div{{lk.id}}">
+        <form id="form{{lk.id}}">
+            <input type="hidden" name="id" value="{{lk.id}}">
+            名字:
+            <input type="text" name="name" class="shadowfocus" value="{{lk.name}}"><br>
+            URL:
+            <input type="text" name="url" class="shadowfocus" value="{{lk.url}}"><br>
+
+            状态:
+            <select name="status" class="shadowfocus">
+                <option value="hidden"
+                {{ if_out(lk.status=='hidden', 'selected') }}>隐藏</option>
+                <option value="visible"
+                {{ if_out(lk.status=='visible', 'selected') }}>显示</option>
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;排序:
+            <input type="text" name="sort" class="shadowfocus" style="width: 100px;" value="{{lk.sort}}"><br>
+
+            描述:
+            <input type="text" name="description" class="shadowfocus" value="{{lk.description}}"><br>
+            图标:
+            <input type="text" name="icon" class="shadowfocus" value="{{lk.icon}}"><br>
+
+            <p>
+                <input type="button" class="btn shadowhover" value="删除" onclick="del({{lk.id}})">
+                <input type="button" class="btn2 shadowhover2" value="修改" onclick="save({{lk.id}})">
+            </p>
+        </form>
+    </div>
     {% end %}
-	<tr id="trnew">
-		<td width="120" align="right">新增: </td>
-		<td>
-            <input type="hidden" name="id" id="idnew" value="0" >
-			说明:<input type="text" name="description" id="descriptionnew" >
-            &nbsp;
-			代码:<input type="text" name="name" id="namenew" >
-			<textarea name="value" id="valuenew" class="shadowfocus" style="width: 95%; height: 50px;"></textarea>
-		</td>
-		<td width="50">
-			<input type="button" class="btn2 shadowhover2" value="保存" onclick="save('new')">
-		</td>
-	</tr>
-	</tbody>
-</table>
+
+    <div class="clear"></div>
+</div>
 
 <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
-function save(name) {
-	$.ajax({
-		url: "/admin/option",
-		data: {
-            id: $("#id" + name).val(),
-            name: $("#name" + name).val(),
-            value: $("#value" + name).val(),
-            description: $("#description" + name).val()
-        },
-		type: "POST",
-		success: function(tagid) {
-			if (tagid > 0) location.reload();
-            else alert('失败!');
-		}
-	});
-}
+    function del(id) {
+        $.ajax({
+            url:'/admin/link-del/' + id,
+            type:"GET",
+            beforeSend:function () {
+                return confirm('确定删除吗?');
+            },
+            success:function (c) {
+                if (c > 0) {
+                    $('#div' + id).remove();
+                }
+            }
+        });
+    }
+    function save(id) {
+        var f = $('#form' + id);
+        $.ajax({
+            url:'/admin/link-edit',
+            data:f.serialize(),
+            type:"POST",
+            beforeSend:function () {
+                if ($('[name=name]', f).val() == '') {
+                    alert('名字不能为空!');
+                    $('[name=name]', f).focus();
+                    return false;
+                }
+                if ($('[name=url]', f).val() == '') {
+                    alert('URL不能为空!');
+                    $('[name=url]', f).focus();
+                    return false;
+                }
+                return true;
+            },
+            success:function (id) {
+                if (id > 0) {
+                    location.reload();
+                }
+            }
+        });
+    }
 </script>
 {% end %}

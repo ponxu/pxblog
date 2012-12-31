@@ -5,6 +5,7 @@ from model import *
 from setting import *
 from utils import *
 from file import *
+from cache import flush_cache
 
 #===========================================================
 class PostQuery(BlogHandler):
@@ -56,12 +57,14 @@ class PostEdit(BlogHandler):
             id = post.id
 
         self.render_json(id)
+        flush_cache()
 
 
 class PostDelete(BlogHandler):
     @authenticated
     def get(self, id):
         self.render_json(Post.remove(int(id)))
+        flush_cache()
 
 #===========================================================
 class TagEdit(BlogHandler):
@@ -85,12 +88,14 @@ class TagEdit(BlogHandler):
             id = tag.id
 
         self.render_json(id)
+        flush_cache()
 
 
 class TagDelete(BlogHandler):
     @authenticated
     def get(self, id):
         self.render_json(Tag.remove(int(id)))
+        flush_cache()
 
 #===========================================================
 class OptionEdit(BlogHandler):
@@ -117,6 +122,7 @@ class OptionEdit(BlogHandler):
             Option.set(name, value)
 
         self.render_json(id)
+        flush_cache()
 
 #===========================================================
 class LinkEdit(BlogHandler):
@@ -129,11 +135,11 @@ class LinkEdit(BlogHandler):
     def post(self):
         link = ObjectLikeDict(
             id=int(self.get_argument('id', '0')),
-            name=self.get_argument('name'),
+            name=self.get_argument('name', ''),
             sort=int(self.get_argument('sort', '0')),
-            description=self.get_argument('description'),
-            url=self.get_argument('url'),
-            icon=self.get_argument('icon'),
+            description=self.get_argument('description', ''),
+            url=self.get_argument('url', ''),
+            icon=self.get_argument('icon', ''),
             status=self.get_argument('status', 'hidden'),
         )
 
@@ -144,18 +150,21 @@ class LinkEdit(BlogHandler):
             id = link.id
 
         self.render_json(id)
+        flush_cache()
 
 
 class LinkDelete(BlogHandler):
     @authenticated
     def get(self, id):
         self.render_json(Link.remove(int(id)))
+        flush_cache()
 
 #===========================================================
 class FileManage(BlogHandler):
     def get(self, filename):
         self.write(read(filename))
 
+    @authenticated
     def post(self):
         file = self.request.files['filedata'][0]
         saved_file_name = "%d%s" % (now(), file['filename'])

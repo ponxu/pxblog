@@ -4,48 +4,82 @@ from model import *
 from setting import page_size
 from utils import fmt_time, now
 
+
+#================================================================
+
 def option(name):
-    return Option.get(name)
-    
-    
-def get_newer_post(post):
-    pass
-    
-    
-def get_older_post(post):
-    pass
-
-
-def get_latest_posts(max=10):
-    posts, total = Post.query(1, paged_size=max, type='post', status='publish', order='id desc')
-    return posts
-
-
-def get_posts(tagid=None, max=page_size):
-    posts, total = Post.query(1, paged_size=max, type='post', status='publish', tagid=tagid)
-    return posts
-
-
-def get_pages(max=page_size):
-    pages, total = Post.query(1, paged_size=max, type='page', status='publish')
-    return pages
+    return Option.get(name) or ''
 
 
 def get_tags():
     return Tag.all()
 
 
-def get_relative_posts(post, max=5):
-    tagids = [tag.id for tag in post.tags]
-    posts, total = Post.query(1,
-        paged_size=max,
+def get_links():
+    return Link.query('visible')
+
+#================================================================
+
+def get_newer_post(post):
+    posts = Post.query(1, paged_size=1,
         type='post',
         status='publish',
-        tagid=tagids,
-        other_condition='id<>%d' % post.id,
-        order='rand()')
-    return posts
+        other_condition='id>%d' % post.id,
+        total_need=False)
+    if posts:
+        return posts[0]
+    else:
+        return None
 
+
+def get_older_post(post):
+    posts = Post.query(1, paged_size=1,
+        type='post',
+        status='publish',
+        other_condition='id<%d' % post.id,
+        total_need=False)
+    if posts:
+        return posts[0]
+    else:
+        return None
+
+
+def get_latest_posts(max=10):
+    return Post.query(1, paged_size=max,
+        type='post',
+        status='publish',
+        order='id desc',
+        total_need=False)
+
+
+def get_posts_by_tag(tagid, max=page_size):
+    return Post.query(1, paged_size=max,
+        type='post',
+        status='publish',
+        tagid=tagid,
+        total_need=False)
+
+
+def get_pages(max=page_size):
+    return Post.query(1, paged_size=max,
+        type='page',
+        status='publish',
+        total_need=False)
+
+
+def get_relative_posts(post, max=5):
+    tagids = [tag.id for tag in post.tags]
+    if tagids:
+        return Post.query(1,
+            paged_size=max,
+            type='post',
+            status='publish',
+            tagid=tagids,
+            other_condition='id<>%d' % post.id,
+            order='rand()',
+            total_need=False)
+
+#================================================================
 
 def html(s):
     """ markdown ==> html """
@@ -58,6 +92,10 @@ def if_out(flag, out):
 
 def fmt(seconds, f='%Y-%m-%d %H:%M:%S'):
     return fmt_time(f, seconds)
+
+
+def today():
+    return fmt_time('%Y-%m-%d')
 
 
 def friend_time(seconds):

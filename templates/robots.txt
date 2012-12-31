@@ -1,0 +1,8 @@
+﻿# robots.txt for pxblog
+# Version 1.0
+
+User-agent: *
+
+Sitemap: {{ option('site_url') }}/sitemap.xml
+
+Disallow: /admin/
